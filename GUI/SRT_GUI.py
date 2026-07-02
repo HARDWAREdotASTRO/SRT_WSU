@@ -5,6 +5,7 @@ from dash import dcc
 from dash import html
 from astropy.coordinates import EarthLocation
 from astropy import units as u
+from astropy import units as u
 from astropy.coordinates import SkyCoord
 from astropy.coordinates import AltAz
 from astropy.coordinates import get_body
@@ -985,7 +986,7 @@ def degreeSpliterRounder(angle):
 
 #This is to output the motors actual location
 @app.callback(
-    Output(component_id='altitude', component_property='children'),
+    Output(component_id='azimuth', component_property='children'),
     [Input(component_id='refresher', 
           component_property='n_intervals')]
 )
@@ -1028,7 +1029,7 @@ def motorLocation(delay):
         return motAz
 
 @app.callback(
-    Output(component_id='azimuth', component_property='children'),
+    Output(component_id='altitude', component_property='children'),
     [Input(component_id='refresher', 
           component_property='n_intervals')]
 )
