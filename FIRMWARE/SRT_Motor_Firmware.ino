@@ -32,8 +32,9 @@ int forLimitReach = 0; //Forward limit hasn't been reached.
 
 
 //Counting Function variables
-int count = 0;      //Blank variable to count high low transitions.
-int count_pin = 4;  //This will be the sensor to count pulses.
+int count = 0;      //Blank variable to count high low transitions
+
+int count_pin = 3;  //This will be the sensor to count pulses. 
 
 int lastState = 0;  //Stores switch state.
 int switchState = 0;//To check switch state.
@@ -72,6 +73,7 @@ void setup() {
 }
 
 void loop() {
+  counter();
   SerialInputFromPi();    //Reads a string from the Pi
   translateString(request, order, count_till, sped);
   pickFunction(request);
@@ -134,7 +136,7 @@ int translateString(int &request, int &order, int &count_till, int &sped){
 }
 
 int Move(int &count, int &forLimitReach, int &revLimitReach, int &zeroed){                   //Primary function for motor use.
-    k = counter();                      //Calls counting function so when 
+    k = count;                    
       if (k == count_till && zeroed == 1) {              //count is achieved motor stops. 
         direct = 0;
         }
@@ -184,11 +186,11 @@ int pickFunction(int &request) {
     direct = 2;
     Move(count, forLimitReach, revLimitReach, zeroed);
   }
-  if (order == 3){                    //Order = 3 is the Go Home function.
-    GoHome(direct, forLimitReach, revLimitReach);
+  if (order == 3){                                
+    GoHome(direct, forLimitReach, revLimitReach); //Order = 3 is the Go Home function.
   }
   if (order == 4){
-    ZeroSRT(direct, forLimitReach, revLimitReach);
+    ZeroSRT(direct, forLimitReach, revLimitReach); //Order = 4 is the Zero SRT function
   }
   if (request == 9){
     k = counter();
@@ -262,14 +264,12 @@ void Forward() {
   digitalWrite(A_1, HIGH);
   digitalWrite(A_2, LOW);
   analogWrite(A_PWM, map(sped, 0, 100, 0, 255));
-  counter();
 }
 
 void Reverse() {
   digitalWrite(A_1, LOW);
   digitalWrite(A_2, HIGH);
   analogWrite(A_PWM, map(sped, 0, 100, 0, 255));
-  counter();
 }
 
 void Stop() {
@@ -283,7 +283,7 @@ int counter() {
   // Detect a change in the reed switch
   if (switchState != lastState) {
     // Debounce
-    delay(2);
+    delay(10);
     switchState = digitalRead(count_pin);
 
     if (switchState != lastState) {
