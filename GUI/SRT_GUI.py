@@ -726,6 +726,10 @@ app.layout = html.Div([
                     interval=1000),
                 dcc.Interval(
                     id='refresher2',
+                    interval=1000),
+                
+                dcc.Interval(
+                    id='refresher3',
                     interval=10000)
             ],
                 style={
@@ -1030,7 +1034,7 @@ def motorLocation(delay):
 
 @app.callback(
     Output(component_id='altitude', component_property='children'),
-    [Input(component_id='refresher', 
+    [Input(component_id='refresher2', 
           component_property='n_intervals')]
 )
 
@@ -1063,7 +1067,7 @@ def motorLocation(delay):
 
 @app.callback(
     Output('graph', 'figure'),
-    [Input(component_id='refresher2', 
+    [Input(component_id='refresher3', 
           component_property='n_intervals'),
     Input(component_id='solarsystem', component_property='value'),
     Input(component_id='RA', component_property='value'),
