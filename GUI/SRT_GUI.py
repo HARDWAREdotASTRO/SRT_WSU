@@ -1,8 +1,7 @@
 import dash
 import dash_daq as daq
 from dash.dependencies import Input, Output, State
-from dash import dcc
-from dash import html
+from dash import dcc, html
 from astropy.coordinates import EarthLocation
 from astropy import units as u
 from astropy import units as u
@@ -11,7 +10,10 @@ from astropy.coordinates import AltAz
 from astropy.coordinates import get_body
 from astropy.time import Time
 from astropy.table import Table
+from datetime import datetime
 
+import time
+import serial
 import numpy as np
 import matplotlib.pyplot as plt
 import plotly.graph_objs as go
@@ -20,15 +22,11 @@ from IPython.display import Image
 from astropy.visualization import astropy_mpl_style
 plt.style.use(astropy_mpl_style)
 
-
-import time
-import serial
-
 #Initialize serial communication, this is often commented out to see the webpage when the Arduino is not hooked up
 #ser1 = serial.Serial('/dev/serial/by-id/usb-Arduino__www.arduino.cc__0043_85438333835351901141-if00', baudrate = 9600, timeout=1)
 #ser2 = serial.Serial('/dev/serial/by-id/ usb-Arduino__www.arduino.cc__0043_75131313632351F081F1-if00', baudrate = 9600, timeout=1)
-ser1 = serial.Serial('/dev/ttyACM0', baudrate = 9600, timeout=1)
-ser2 = serial.Serial('/dev/ttyACM1', baudrate = 9600, timeout=1)
+#ser1 = serial.Serial('/dev/ttyACM0', baudrate = 9600, timeout=1)
+#ser2 = serial.Serial('/dev/ttyACM1', baudrate = 9600, timeout=1)
 
 
 #Dummy variables for keeping track of button presses.
@@ -52,6 +50,12 @@ external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 # This is to shorten the command needed to reference the CSS file as well as the Dash libraries
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
+#Moc hydrogen line test/live updating with sample data to see plot
+# def fetch_sdr_data(): #replace all this with data being read from SDR 
+#         frequencies = np.linspace(1420.0, 1420.8, 200)
+#         intensity = 10 + 5 * np.exp(-((frequencies - 1420.4)**2) / (0.05**2)) + np.random.normal(0, 0.5, 200)
+#         return frequencies, intensity
+
 # This is where the darkness begins.   
 app.layout = html.Div([
     #Start with the banner at the top of the page
@@ -63,14 +67,14 @@ app.layout = html.Div([
             "position": "relative",
             "padding": "10px"},
         children=[
-            html.H3("Small Radio Telescope Control"),
+            html.H3("Winona StateSmall Radio Telescope Control"),
 
             html.A(
                 html.Img(
                     src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPlyNBjmPB7znjvxXWwSnz4wzOi61_nE1HGQ5ftisXgJ13XUNUyBlou6av&s=10%22",
 
                     style={
-                        "height": "60px",
+                        "height": "90px",
                         "position": "absolute",
                         "top": "10px",
                         "right": "10px"
@@ -78,9 +82,32 @@ app.layout = html.Div([
             ),
             href="https://www.winona.edu/",
             target="_blank"
-        )
-    ]
+        ),
+        html.Div([
+            html.Div(id='live-date-time'),
+            dcc.Interval(id='interval-component', interval=1000, n_intervals=0) # Updates every 1000ms
+            ])
+        ]
     ),
+    
+    html.Div([
+            dcc.Textarea(
+                id="status-monitor",
+                placeholder=" ",
+                value="",
+                style={
+                    "width": "99.75%",
+                    "height": "90px",
+                    "marginLeft": "0.25%",
+                    "marginBottom": "0%",
+                    },
+                ),
+            ],
+                className="twelve columns",
+                style={
+                    "marginTop": "1%"
+                }
+            ),
     #Setup for the graph to display objects seen from Earth
     html.Div([
         #Dropdown bar to choose which planet will be selected
@@ -114,13 +141,15 @@ app.layout = html.Div([
         ],
             className="twelve columns",
             style={
-                "marginTop": "5%"
+                "marginTop": "3%"
             }
         )
     ],
         #Take up the full width of the page
         className='twelve columns'
     ),
+
+
     #Seperate the rest of the page
     html.Div([
         #Direct control compartment of the page
@@ -150,7 +179,7 @@ app.layout = html.Div([
                         ),
                     daq.StopButton(
                             id="go-home-button",
-                            buttonText="Go Home",
+                            buttonText="HOME",
                             style={
                                 "display": "flex-right",
                                 "justify-content": "space-around",
@@ -159,17 +188,7 @@ app.layout = html.Div([
                             className="six columns",
                             n_clicks=0
                         ),
-                    # ~ daq.StopButton(
-                            # ~ id="zero-button",
-                            # ~ buttonText="Zero",
-                            # ~ style={
-                                # ~ "display": "flex-right",
-                                # ~ "justify-content": "space-around",
-                                # ~ "padding": "10px 10px 10px 10px"
-                            # ~ },
-                            # ~ className="six-columns",
-                            # ~ n_clicks=0
-                          # ~ )  
+                   
                 ],
                     style={
                         #Box shadow gives a light border
@@ -324,6 +343,7 @@ app.layout = html.Div([
                     },
                         className="row"
                 ),
+                
             ],
                 style={
                     "align-items": "center",
@@ -335,6 +355,7 @@ app.layout = html.Div([
                 #Direct control box takes a third of the page
                 className="four columns"
             ),
+            
             html.Div([
                 #A box to callback the srt's current direction
                 html.Div([
@@ -460,9 +481,11 @@ app.layout = html.Div([
                     "border": "1px solid #2a3f5f",
                     "border-radius": "4px",
                     #'boxShadow': '0px 0px 5px 5px rgba(204,204,204,0.4)',
-                    "padding": "20px 20px 20px 20px"
+                    "padding": "20px 20px 20px 20px",
+                    "MarginBottom": "2%"
                 },
-                className="eight columns"
+                className="eight columns",
+        
             ),
             html.Div([
                 #User input object
@@ -503,7 +526,7 @@ app.layout = html.Div([
                         className="ten columns"
                     ),
                     html.H5(
-                        "Declenation", 
+                        "Declination", 
                         style={
                             "textAlign": "bottom"
                         }
@@ -542,32 +565,13 @@ app.layout = html.Div([
                     "border": "1px solid #2a3f5f",
                     "border-radius": "4px",
                     "position": "relative",
-                    "marginTop": "6%",
-                    "marginBottom": "4%",
+                    "marginTop": "2%",
+                    "marginBottom": "2%",
                     "padding": "10px 10px 10px 10px"
                     },
                 className="eight columns"
             ),
-        html.Div([
             html.Div([
-                dcc.Textarea(
-                    id="status-monitor",
-                    placeholder=" ",
-                    value="",
-                    style={
-                        "width": "89%",
-                        "height": "157px",
-                        "marginLeft": "5.7%",
-                        "marginBottom": "6%",
-                    },
-                ),
-            ],
-                className="four columns",
-                style={
-                    "marginTop": "5%"
-                }
-            ),
-                html.Div([
                     #Select how to observe
                     html.Div([
                             html.H3(
@@ -688,7 +692,7 @@ app.layout = html.Div([
                         className="row"
                     )
                     ]
-                    )
+                    ),
                 ],
                     style={
                         "align-items": "center",
@@ -697,13 +701,22 @@ app.layout = html.Div([
                         "padding": "10px 10px 10px 10px"
                         },
                     className="eight columns"
-                )
-        ],
-            className="twelve columns"
-            #style={
-            #    "marginTop": "3%"
-            #}
-        ),
+                ),
+        
+    #      html.Div([
+    #         dcc.Graph(id='live-hydrogen-graph'),
+    #         dcc.Interval(
+    #             id='interval-component1',
+    #              interval=1*1000, # Update every 1000 milliseconds (1 second)
+    #             n_intervals=0
+    # )
+    # ],
+    #     className='twelve columns'
+    # ),
+    
+    
+    
+
             html.Div([
                 html.Div(id='go-home-button-count'),
                 html.Div(id='stop-button-count'),
@@ -745,10 +758,41 @@ app.layout = html.Div([
             'marginLeft': 'auto', 
             'marginRight': 'auto',
             "width": "900px",
-            'boxShadow': '0px 0px 5px 5px rgba(204,204,204,0.4)'
+            'boxShadow': '0px 0px 5px 5px rgba(204,204,204,0.4)',
         }
-
 )
+@app.callback(Output('live-date-time', 'children'),
+              Input('interval-component', 'n_intervals'))
+def update_metrics(n):
+    return f"Current Date & Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
+
+# @app.callback(
+#     Output('live-hydrogen-graph', 'figure'),
+#     Input('interval-component1', 'n_intervals')
+# )
+# def update_graph_live(n):
+#     # Fetch latest SDR or backend telescope data
+#     freqs, intensity = fetch_sdr_data()
+
+#     # Create the Plotly Trace
+#     trace = go.Scatter(
+#         x=freqs,
+#         y=intensity,
+#         mode='lines',
+#         name='Antenna Temperature',
+#         line=dict(color='firebrick', width=2)
+#     )
+
+#     # Return the Figure Object
+#     return {
+#         'data': [trace],
+#         'layout': go.Layout(
+#             title='Live 1.42 GHz Neutral Hydrogen Emission',
+#             xaxis=dict(title='Frequency (MHz)', range=[1420.0, 1420.8]),
+#             yaxis=dict(title='Relative Intensity', range=[0, 20]),
+#             #template='plotly_dark' # Clean visual theme
+#         )
+#     }
 
 #Box Size will be disabled if Scan 
 @app.callback(
@@ -1191,7 +1235,7 @@ def getAltAz(val, RA, DEC):
 )
 def serial_monitor(intervals):
     status = (
-        "This application was developed to control the Winona State University Small Radio Telescope located atop Minné Hall."
+        "This application was developed to control the Winona State University Small Radio Telescope originally developed by MIT's Haystack Observatory. The telescope was donated to Winona State by Mayo High School in Rochester, Minnesota. The SRT includes a base and motors holding a 2.3m dish, allowing it to point over the entire sky. This graphical user interface controls the funcions of the SRT."
     )
 
     return status
