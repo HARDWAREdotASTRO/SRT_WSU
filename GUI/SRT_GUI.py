@@ -1025,6 +1025,32 @@ app.layout = html.Div([
                 href="https://www.arduino.cc/",
                 target="_blank"
             ),
+            html.A(
+                html.Img(
+                    src="https://raw.githubusercontent.com/HARDWAREdotASTRO/HARDWAREdotASTRO.github.io/refs/heads/master/images/image00.png",
+                    style={
+                        "height": "52px",
+                        "position": "absolute",
+                        "top": "10px",
+                        "left": "120px"
+                    }
+                ),
+                href="https://github.com/HARDWAREdotASTRO",
+                target="_blank"
+            ),
+            html.A(
+                html.Img(
+                    src="https://blogs.winona.edu/alumni/wp-content/uploads/sites/3/2021/03/WSU-Foundation-Logo-Purple.jpg",
+                    style={
+                        "height": "100px",
+                        "position": "absolute",
+                        "bottom": "10px",
+                        "right": "10px"
+                    }
+                ),
+                href="https://www.winona.edu/foundation/",
+                target="_blank"
+            ),
         ]
         )
     ],
