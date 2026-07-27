@@ -23,8 +23,10 @@ from astropy.visualization import astropy_mpl_style
 plt.style.use(astropy_mpl_style)
 
 #Initialize serial communication, this is often commented out to see the webpage when the Arduino is not hooked up
-#ser1 = serial.Serial('/dev/serial/by-id/usb-Arduino__www.arduino.cc__0043_85438333835351901141-if00', baudrate = 9600, timeout=1)
+
+#ser1 = serial.Serial('/dev/serial/by-id/usb-Arduino__www.arduino.cc__0043_85438333835351901141-if00', baudrate = 9600, timeout=1) #tried to impliment serial connection via arduino ID
 #ser2 = serial.Serial('/dev/serial/by-id/ usb-Arduino__www.arduino.cc__0043_75131313632351F081F1-if00', baudrate = 9600, timeout=1)
+
 #ser1 = serial.Serial('/dev/ttyACM0', baudrate = 9600, timeout=1)
 #ser2 = serial.Serial('/dev/ttyACM1', baudrate = 9600, timeout=1)
 
@@ -50,12 +52,6 @@ external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 # This is to shorten the command needed to reference the CSS file as well as the Dash libraries
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
-#Moc hydrogen line test/live updating with sample data to see plot
-# def fetch_sdr_data(): #replace all this with data being read from SDR 
-#         frequencies = np.linspace(1420.0, 1420.8, 200)
-#         intensity = 10 + 5 * np.exp(-((frequencies - 1420.4)**2) / (0.05**2)) + np.random.normal(0, 0.5, 200)
-#         return frequencies, intensity
-
 # This is where the darkness begins.   
 app.layout = html.Div([
     #Start with the banner at the top of the page
@@ -67,7 +63,7 @@ app.layout = html.Div([
             "position": "relative",
             "padding": "10px"},
         children=[
-            html.H3("Winona StateSmall Radio Telescope Control"),
+            html.H3("Winona State Small Radio Telescope Control"),
 
             html.A(
                 html.Img(
@@ -83,14 +79,14 @@ app.layout = html.Div([
             href="https://www.winona.edu/",
             target="_blank"
         ),
-        html.Div([
-            html.Div(id='live-date-time'),
+        html.Div([ #This shows the live date and time under the title
+            html.Div(id='live-date-time'), 
             dcc.Interval(id='interval-component', interval=1000, n_intervals=0) # Updates every 1000ms
             ])
         ]
     ),
     
-    html.Div([
+    html.Div([ #Status monitor to show/list important and relative information
             dcc.Textarea(
                 id="status-monitor",
                 placeholder=" ",
@@ -157,16 +153,15 @@ app.layout = html.Div([
                 html.Div([
                     #Title
                     html.H3(
-                        "Direct Control"
-                    )
+                        "Direct Control")
                 ], 
                     className='Title'
                 ),
             #Two buttons per row
                 html.Div([
                      daq.StopButton(
-                            id="stop-button",
-                            buttonText="STOP",
+                            id="stop-button", 
+                            buttonText="STOP", #Button STOPS motors
                             style={
                                 #Not entirely sure how these work, padding helpes seperate boxes, maybe
                                 "display": "center",
@@ -179,7 +174,7 @@ app.layout = html.Div([
                         ),
                     daq.StopButton(
                             id="go-home-button",
-                            buttonText="HOME",
+                            buttonText="HOME", #Button makes telescope go HOME
                             style={
                                 "display": "flex-right",
                                 "justify-content": "space-around",
@@ -202,7 +197,7 @@ app.layout = html.Div([
                 html.Div([
                     daq.StopButton(
                                 id="zero-button",
-                                buttonText="Zero",
+                                buttonText="Zero", #Button will ZERO the SRT
                                 style={
                                     "display": "flex-right",
                                     "justify-content": "space-around",
@@ -225,14 +220,14 @@ app.layout = html.Div([
                 html.Div([
                     html.Div([
                         html.H5(
-                            "Altitude Motor"
+                            "Altitude Motor" #Altitude motor control
                         )
                     ], 
                         className='Title'
                     ),
                     html.Div([
                         daq.StopButton(
-                            id="alt-forward-button",
+                            id="alt-forward-button", #forward button
                             buttonText="Forward",
                             style={
                                 "display": "flex",
@@ -244,7 +239,7 @@ app.layout = html.Div([
                             n_clicks=0
                         ),
                         daq.StopButton(
-                            id="alt-reverse-button",
+                            id="alt-reverse-button", #reverse button
                             buttonText="Reverse",
                             style={
                                 "display": "flex",
@@ -286,15 +281,15 @@ app.layout = html.Div([
                 html.Div([
                     html.Div([
                         html.H5(
-                            "Azimuth Motor"
+                            "Azimuth Motor" #Azimuth motor control
                         )
                     ], 
                         className='Title'
                     ),
                     html.Div([
                         daq.StopButton(
-                            id="az-forward-button",
-                            buttonText="Forward",
+                            id="az-forward-button", #forward button
+                            buttonText="Forward", 
                             style={
                                 "display": "flex",
                                 "justify-content": "space-around",
@@ -305,7 +300,7 @@ app.layout = html.Div([
                             n_clicks=0
                         ),
                         daq.StopButton(
-                            id="az-reverse-button",
+                            id="az-reverse-button", #reverse button
                             buttonText="Reverse",
                             style={
                                 "display": "flex",
@@ -321,7 +316,7 @@ app.layout = html.Div([
                     ),
                     html.Div([
                         dcc.Slider(
-                            id="az-slider",
+                            id="az-slider", #Azimuth speed slider
                             min=0,
                             max=100,
                             value=100
@@ -342,7 +337,7 @@ app.layout = html.Div([
                         "padding": "10px 10px 10px 20px"
                     },
                         className="row"
-                ),
+                ),            
                 
             ],
                 style={
@@ -356,6 +351,7 @@ app.layout = html.Div([
                 className="four columns"
             ),
             
+
             html.Div([
                 #A box to callback the srt's current direction
                 html.Div([
@@ -369,7 +365,7 @@ app.layout = html.Div([
                     html.Div([
                         html.Div([
                             html.Div([
-                                "Altitude:  "
+                                "Altitude:  " #updates as SRT moves in altitude 
                             ],
                                 style={
                                     'textAlign': 'right'
@@ -388,7 +384,7 @@ app.layout = html.Div([
                         ),
                         html.Div([
                             html.Div([
-                                "Azimuth:  "
+                                "Azimuth:  " #updates when SRT moves in the azimuth direction
                             ],
                                 style={
                                     'textAlign': 'right'
@@ -420,7 +416,7 @@ app.layout = html.Div([
                 html.Div([
                     html.Div([
                         html.H3(
-                            "Input Direction"
+                            "Input Direction" #direction the user wants SRT to go
                         )
                     ], 
                         className='Title'
@@ -480,7 +476,7 @@ app.layout = html.Div([
                     "align-items": "center",
                     "border": "1px solid #2a3f5f",
                     "border-radius": "4px",
-                    #'boxShadow': '0px 0px 5px 5px rgba(204,204,204,0.4)',
+                    'boxShadow': '0px 0px 5px 5px rgba(204,204,204,0.4)',
                     "padding": "20px 20px 20px 20px",
                     "MarginBottom": "2%"
                 },
@@ -541,7 +537,7 @@ app.layout = html.Div([
                 ),
                 html.Div([
                     daq.StopButton(
-                        id="go-button",
+                        id="go-button", #go button for object coords inputs
                         buttonText="Go",
                         style={
                             "display": "flex",
@@ -554,11 +550,11 @@ app.layout = html.Div([
                 ],                
                     style={
                         "align-items": "center",
-                        
                         "padding": "10px 10px 10px 20px"
                     },
                     className="twelve columns"
-                )
+                ),
+                
             ],
                 style={
                     "align-items": "center",
@@ -567,10 +563,11 @@ app.layout = html.Div([
                     "position": "relative",
                     "marginTop": "2%",
                     "marginBottom": "2%",
-                    "padding": "10px 10px 10px 10px"
+                    "padding": "10px 10px 10px 10px",
                     },
                 className="eight columns"
             ),
+            
             html.Div([
                     #Select how to observe
                     html.Div([
@@ -587,7 +584,9 @@ app.layout = html.Div([
                                 )
                             ], 
                                 className='Title'
+                                
                             ),
+                            
                             #Pick the method
                             dcc.RadioItems(
                                 id="select",
@@ -597,7 +596,7 @@ app.layout = html.Div([
                                     {'label': 'Scan', 'value': 'Scan'}
                                 ],
                                 value='Goto'
-                            )
+                            ),
                         ],
                             style={
                                 "align-items": "center",
@@ -634,24 +633,30 @@ app.layout = html.Div([
                                         "Box Size"
                                     )
                                 ], 
-                                    className='Title'
+                                    className='Title',
+                                    style={
+                                    "marginLeft": "-30px"
+                                    }
                                 ),
                                 html.Div([
                                     dcc.Input(
                                         id='boxSize', 
                                         value='10', 
                                         type='text',
-                                        className="five columns"
+                                        className="five columns",
+                                        style={
+                                            "marginLeft": "-30px"
+                                        }
                                     ),
                                     html.H5(
                                         "°", 
                                         style={
-                                            "paddingRight": "50%",
+                                            "paddingRight": "70%",
                                             "textAlign": "right"
                                         }
                                     )
                                 ]
-                                )
+                                ) 
                         ],
                             className="four columns"
                         ),
@@ -661,19 +666,25 @@ app.layout = html.Div([
                                     "Scan Speed"
                                 )
                             ], 
-                                className='Title'
+                                className='Title',
+                                style={
+                                    "marginLeft": "-30px"
+                                    }
                             ),
                             html.Div([
                                 dcc.Input(
                                     id='scanSpeed', 
                                     value='10', 
                                     type='text',
-                                    className="five columns"
+                                    className="five columns",
+                                    style={
+                                        "marginLeft": "-30px"
+                                    }
                                 ),
                                 html.H5(
                                     "°/min", 
                                     style={
-                                        "paddingRight": "30%",
+                                        "paddingRight": "45%",
                                         "textAlign": "right"
                                     }
                                 )
@@ -682,7 +693,77 @@ app.layout = html.Div([
                             )
                     ],
                         className="four columns"
-                    )
+                    ),
+                    html.Div([
+                        html.Div([
+                            html.H6(
+                                "Frequency Start"
+                                )
+                            ], 
+                                className='Title',
+                                    style={
+                                    "marginLeft": "-30px"
+                                    }
+                            ),
+                            html.Div([
+                                dcc.Input(
+                                    id='frequencyStart', 
+                                    value='1420', 
+                                    type='text',
+                                    className="five columns",
+                                        style={
+                                            "marginLeft": "-30px"
+                                        }
+                                ),
+                                html.H5(
+                                    "MHz", 
+                                    style={
+                                        "paddingRight": "50%",
+                                        "textAlign": "right"
+                                    }
+                                )
+                            ], 
+                                className='row'
+                            )
+                    ],
+                        className="five columns"
+                    ),
+                    html.Div([
+                        html.Div([
+                            html.H6(
+                                    "End"
+                                    )
+                                ], 
+                                className='Title',
+                                style={
+                                    "marginTop": "-85px",
+                                    "marginLeft": "325px"
+                                    }
+                        ),
+                        html.Div([
+                            dcc.Input(
+                                id='frequencyEnd', 
+                                value='1420.8', 
+                                type='text',
+                                className="five columns",
+                                style={
+                                    "marginTop": "0px",
+                                    "marginLeft": "325px"
+                                    }
+                        ),
+                            html.H5(
+                                    "MHz", 
+                                    style={
+                                        "textAlign": "right",
+                                        "marginRight": "-245px"
+                                        }
+                                    )
+                                ], 
+                                className='row'
+                                )
+                            ],
+                            className="five columns"
+                        )
                     ],
                         style={
                             "align-items": "center",
@@ -702,21 +783,8 @@ app.layout = html.Div([
                         },
                     className="eight columns"
                 ),
-        
-    #      html.Div([
-    #         dcc.Graph(id='live-hydrogen-graph'),
-    #         dcc.Interval(
-    #             id='interval-component1',
-    #              interval=1*1000, # Update every 1000 milliseconds (1 second)
-    #             n_intervals=0
-    # )
-    # ],
-    #     className='twelve columns'
-    # ),
-    
-    
-    
 
+    
             html.Div([
                 html.Div(id='go-home-button-count'),
                 html.Div(id='stop-button-count'),
@@ -752,47 +820,137 @@ app.layout = html.Div([
     ],
         className="row"
     ),
+        html.Div(
+            id="data-box",
+            children=[
+                html.H3(
+                    "Data Settings",
+                    style={
+                        "position": "absolute",
+                        "top": "5px",
+                        "left": "10px",
+                        "margin": "0px",
+                    }
+                ),
+                html.Div(
+                    [
+                    daq.StopButton(
+                        id="load-button",
+                        buttonText="LOAD",
+                        n_clicks=0,
+                        style={
+                            "margin": "5px",
+                            "display": "flex",
+                            "justify-content": "space-around",
+                            "align-items": "center",
+                            "position": "absolute",
+                            "bottom": "10px",
+                            "left": "-100px",
+                            "right": "10px",
+                            "top": "-50px"
+                            },
+                        ),
+                    daq.StopButton(
+                        id="save-button",
+                        buttonText="SAVE",
+                        n_clicks=0,
+                        style={
+                            "margin": "5px",
+                            "display": "flex",
+                            "justify-content": "space-around",
+                            "align-items": "center",
+                            "position": "absolute",
+                            "bottom": "10px",
+                            "left": "125px",
+                            "right": "10px",
+                            "top": "-50px"
+                            },
+                        ),
+                        daq.StopButton(
+                        id="reset-button",
+                        buttonText="RESET",
+                        n_clicks=0,
+                        style={
+                            "margin": "5px",
+                            "display": "flex",
+                            "justify-content": "space-around",
+                            "align-items": "center",
+                            "position": "absolute",
+                            "bottom": "10px",
+                            "left": "125px",
+                            "right": "10px",
+                            "top": "75px"
+                            },
+                        ),
+                        daq.StopButton(
+                        id="export-button",
+                        buttonText="EXPORT",
+                        n_clicks=0,
+                        style={
+                            "margin": "5px",
+                            "display": "flex",
+                            "justify-content": "space-around",
+                            "align-items": "center",
+                            "position": "absolute",
+                            "bottom": "10px",
+                            "left": "-100px",
+                            "right": "10px",
+                            "top": "75px"
+                            },
+                        ),
+                    ],
+                    
+                ),
+            ],
+            style={
+                "border": "1px solid black",
+                "height": "175px",
+                "width": "28%",
+                "padding": "10px",
+                "marginTop": "-200px",
+                "marginBottom": "3%",
+                "position": "relative",
+            },
+        ),
+        html.Div([
+            dcc.Graph(id='live-hydrogen-graph'),
+            dcc.Interval(
+                id='interval-component1',
+                 interval=1*1000, # Update every 1000 milliseconds (1 second)
+                n_intervals=0
+                )
+            ],
+            className='twelve columns'
+        ),
+
     ],
         style={
             'padding': '0px 10px 15px 10px',
             'marginLeft': 'auto', 
             'marginRight': 'auto',
             "width": "900px",
-            'boxShadow': '0px 0px 5px 5px rgba(204,204,204,0.4)',
+            "height": "2150px",
+            'boxShadow': '0px 0px 15px 10px rgba(204,204,204,0.4)',
         }
 )
+
 @app.callback(Output('live-date-time', 'children'),
               Input('interval-component', 'n_intervals'))
 def update_metrics(n):
     return f"Current Date & Time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
 
-# @app.callback(
-#     Output('live-hydrogen-graph', 'figure'),
-#     Input('interval-component1', 'n_intervals')
-# )
-# def update_graph_live(n):
-#     # Fetch latest SDR or backend telescope data
-#     freqs, intensity = fetch_sdr_data()
+# Serial Monitor
+@app.callback(
+    Output("status-monitor", "value"), 
+    [Input("placeholder2", "value")]
+)
 
-#     # Create the Plotly Trace
-#     trace = go.Scatter(
-#         x=freqs,
-#         y=intensity,
-#         mode='lines',
-#         name='Antenna Temperature',
-#         line=dict(color='firebrick', width=2)
-#     )
+def serial_monitor(intervals):
+    status = (
+        "This application was developed to control the Winona State University Small Radio Telescope originally developed by MIT's Haystack Observatory. The telescope was donated to Winona State by Mayo High School in Rochester, Minnesota. The SRT includes a base and motors holding a 2.3m dish, allowing it to point over the entire sky. This graphical user interface controls the functions of the SRT."
+    )
 
-#     # Return the Figure Object
-#     return {
-#         'data': [trace],
-#         'layout': go.Layout(
-#             title='Live 1.42 GHz Neutral Hydrogen Emission',
-#             xaxis=dict(title='Frequency (MHz)', range=[1420.0, 1420.8]),
-#             yaxis=dict(title='Relative Intensity', range=[0, 20]),
-#             #template='plotly_dark' # Clean visual theme
-#         )
-#     }
+    return status
 
 #Box Size will be disabled if Scan 
 @app.callback(
@@ -818,6 +976,20 @@ def stateFunc4(selection):
         return False
     else:
         return True
+
+# Frequency Start and End will be disabled if Scan is not on
+@app.callback(
+    [Output(component_id='frequencyStart', component_property='disabled'),
+     Output(component_id='frequencyEnd', component_property='disabled')],
+    [Input(component_id='select', component_property='value')]
+)
+
+def frequencyState(selection):
+    if selection == 'Scan':
+        return False, False
+    else:
+        return True, True
+
 
 # Connects RA and Dec coordinates to an Alt and Az output
 @app.callback(
@@ -997,7 +1169,7 @@ def AzForButton(az_for_clicks, speed_az):
     dash.dependencies.Input('az-slider', 'value')]
 )
 
-def AzRevButton(az_rev_clicks, speed_az): #############
+def AzRevButton(az_rev_clicks, speed_az): 
     global azrevprev
     if az_rev_clicks > azrevprev:
         if speed_az < 100:
@@ -1013,7 +1185,7 @@ def AzRevButton(az_rev_clicks, speed_az): #############
     dash.dependencies.Output('speed-control-az', 'children'),
     [dash.dependencies.Input('az-slider', 'value')])
 
-def AltSpeed(speed_az):
+def AzSpeed(speed_az):
     return 'PWM Duty Cycle = "{}"'.format(speed_az)
 
 #Callable function for converting decimals to rounded degree, minutes, seconds
@@ -1039,7 +1211,7 @@ def degreeSpliterRounder(angle):
           component_property='n_intervals')]
 )
 
-def motorLocation(delay):
+def motorLocationAz(delay):
     global motAz
     #Request count from Arduino
     ser1.write(str.encode("<9>"))
@@ -1082,7 +1254,7 @@ def motorLocation(delay):
           component_property='n_intervals')]
 )
 
-def motorLocation(delay):
+def motorLocationAlt(delay):
     global motAlt
     ser2.write(str.encode("<9>"))
     try:
@@ -1228,17 +1400,39 @@ def getAltAz(val, RA, DEC):
     #
     return BodAz1, BodAlt1, BodAz2, BodAlt2
 
-# Serial Monitor
+#Moc hydrogen line test/live updating with sample data to see plot
+def fetch_sdr_data(): #replace all this with data being read from SDR 
+        frequencies = np.linspace(1420.0, 1420.8, 200)
+        intensity = 10 + 5 * np.exp(-((frequencies - 1420.4)**2) / (0.05**2)) + np.random.normal(0, 0.5, 200)
+        return frequencies, intensity
+
 @app.callback(
-    Output("status-monitor", "value"), 
-    [Input("placeholder2", "value")]
+    Output('live-hydrogen-graph', 'figure'),
+    Input('interval-component1', 'n_intervals')
 )
-def serial_monitor(intervals):
-    status = (
-        "This application was developed to control the Winona State University Small Radio Telescope originally developed by MIT's Haystack Observatory. The telescope was donated to Winona State by Mayo High School in Rochester, Minnesota. The SRT includes a base and motors holding a 2.3m dish, allowing it to point over the entire sky. This graphical user interface controls the funcions of the SRT."
+def update_graph_live(n):
+    # Fetch latest SDR or backend telescope data
+    freqs, intensity = fetch_sdr_data()
+
+    # Create the Plotly Trace
+    trace = go.Scatter(
+        x=freqs,
+        y=intensity,
+        mode='lines',
+        name='Antenna Temperature',
+        line=dict(color='firebrick', width=2)
     )
 
-    return status
+    # Return the Figure Object
+    return {
+        'data': [trace],
+        'layout': go.Layout(
+            title='Live 1.42 GHz Neutral Hydrogen Emission',
+            xaxis=dict(title='Frequency (MHz)', range=[1420.0, 1420.8]),
+            yaxis=dict(title='Relative Intensity', range=[0, 20]),
+            #template='plotly_dark' # Clean visual theme
+        )
+    }
 
 if __name__ == '__main__':
     app.run(debug=True)
