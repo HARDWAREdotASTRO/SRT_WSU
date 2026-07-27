@@ -36,7 +36,7 @@ samples *= 2**14 # The PlutoSDR expects samples to be between -2^14 and +2^14, n
 
 # Start the transmitter
 sdr.tx_cyclic_buffer = True # Enable cyclic buffers
-sdr.tx(samples_tx) # start transmitting
+sdr.tx(samples) # start transmitting
 
 # Config Rx (setting for Rxpin)
 sdr.sample_rate = int(sample_rate)
