@@ -61,7 +61,8 @@ app.layout = html.Div([
             "backgroundColor": "#3f0099",
             "color": "white",
             "position": "relative",
-            "padding": "10px"},
+            "padding": "10px",
+            "height": "100px"},
         children=[
             html.H3("Winona State Small Radio Telescope Control"),
 
@@ -78,6 +79,20 @@ app.layout = html.Div([
             ),
             href="https://www.winona.edu/",
             target="_blank"
+            ),
+            html.A(
+                html.Img(
+                    src="https://static.freepnglogo.com/images/all_img/github-logo-white-stroke-2a6c.png",
+
+                    style={
+                        "height": "90px",
+                        "position": "absolute",
+                        "top": "10px",
+                        "right": "95px"
+                }
+            ),
+            href="https://github.com/HARDWAREdotASTRO/SRT_WSU",
+            target="_blank"
         ),
         html.Div([ #This shows the live date and time under the title
             html.Div(id='live-date-time'), 
@@ -93,7 +108,7 @@ app.layout = html.Div([
                 value="",
                 style={
                     "width": "99.75%",
-                    "height": "90px",
+                    "height": "75px",
                     "marginLeft": "0.25%",
                     "marginBottom": "0%",
                     },
@@ -942,10 +957,10 @@ app.layout = html.Div([
             ],
             style={
                 "border": "1px solid black",
-                "height": "175px",
+                "height": "225px",
                 "width": "28%",
                 "padding": "10px",
-                "marginTop": "-200px",
+                "marginTop": "-250px",
                 "marginBottom": "3%",
                 "position": "relative",
             },
@@ -961,14 +976,56 @@ app.layout = html.Div([
             className='twelve columns'
         ),
         html.Div(
-        id="container",
+        id="containerbottom",
         style={
             "backgroundColor": "#3f0099",
             "color": "white",
             "position": "relative",
             "padding": "10px",
             "top": "450px",
-            "height": "100px"},
+            "height": "100px"
+            },
+        children=[
+            html.A(
+                html.Img(
+                    src="https://upload.wikimedia.org/wikipedia/en/c/cb/Raspberry_Pi_Logo.svg",
+                    style={
+                        "height": "55px",
+                        "position": "absolute",
+                        "top": "10px",
+                        "left": "10px"
+                    }
+                ),
+                href="https://www.raspberrypi.com/",
+                target="_blank"
+            ),
+            html.A(
+                html.Img(
+                    src="https://a.pololu-files.com/picture/0J7078.200h.jpg?4922c8bb56daed54a188c035bf8fa593",
+                    style={
+                        "height": "35px",
+                        "position": "absolute",
+                        "bottom": "10px",
+                        "left": "12.5px"
+                    }
+                ),
+                href="https://www.pololu.com/",
+                target="_blank"
+            ),
+            html.A(
+                html.Img(
+                    src="https://cdn.freebiesupply.com/logos/thumbs/2x/arduino-1-logo.png",
+                    style={
+                        "height": "52px",
+                        "position": "absolute",
+                        "top": "10px",
+                        "left": "55px"
+                    }
+                ),
+                href="https://www.arduino.cc/",
+                target="_blank"
+            ),
+        ]
         )
     ],
         style={
@@ -1403,6 +1460,13 @@ def MakeGraph(delay, val, RA, DEC, clicks):
                 "ticktext":directions, 
                 "tickvals":directLoc},
             yaxis={"title": "Altitude", 'range': [0, 90]},
+            legend=dict(
+                x=5,
+                y=0.65,
+                xanchor="left",
+                yanchor="top",
+                bgcolor="rgba(255,255,255,0.7)"
+        ),
             margin={"l": 70, "b": 100, "t": 0, "r": 25}
         )
     }
