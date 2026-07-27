@@ -226,29 +226,44 @@ app.layout = html.Div([
                         className='Title'
                     ),
                     html.Div([
-                        daq.StopButton(
-                            id="alt-forward-button", #forward button
-                            buttonText="Forward",
+                        html.Button(
+                            "Forward",
+                            id="alt-forward-button",
+                            n_clicks=0,
+                            className="three columns",
                             style={
                                 "display": "flex",
-                                "justify-content": "space-around",
-                                "align-items": "center",
-                                "padding": "10px 10px 10px 10px"
-                            },
-                            className="six columns",
-                            n_clicks=0
+                                "justifyContent": "space-around",
+                                "alignItems": "center",
+                                "padding": "10px",
+                                "width": "45%",
+                                "backgroundColor": "#4B08A1",
+                                "color": "white",
+                                "border": "1px solid #4B08A1",
+                                "borderRadius": "5px",
+                                "cursor": "pointer",
+                                "fontWeight": "600"
+                            }
                         ),
-                        daq.StopButton(
-                            id="alt-reverse-button", #reverse button
-                            buttonText="Reverse",
+                        
+                        html.Button(
+                            "Reverse",
+                            id="alt-reverse-button",
+                            n_clicks=0,
+                            className="three columns",
                             style={
                                 "display": "flex",
-                                "justify-content": "space-around",
-                                "align-items": "flex-end",
-                                "padding": "10px 10px 10px 10px"
-                            },
-                            className="six columns",
-                            n_clicks=0
+                                "justifyContent": "space-around",
+                                "alignItems": "center",
+                                "padding": "10px",
+                                "width": "45%",
+                                "backgroundColor": "#4B08A1",
+                                "color": "white",
+                                "border": "1px solid #4B08A1",
+                                "borderRadius": "5px",
+                                "cursor": "pointer",
+                                "fontWeight": "600"
+                            }
                         )
                     ],
                         className="row"
@@ -287,29 +302,44 @@ app.layout = html.Div([
                         className='Title'
                     ),
                     html.Div([
-                        daq.StopButton(
-                            id="az-forward-button", #forward button
-                            buttonText="Forward", 
+                        html.Button(
+                            "Forward",
+                            id="az-forward-button",
+                            n_clicks=0,
+                            className="three columns",
                             style={
                                 "display": "flex",
-                                "justify-content": "space-around",
-                                "align-items": "center",
-                                "padding": "10px 10px 10px 10px"
-                            },
-                            className="six columns",
-                            n_clicks=0
+                                "justifyContent": "space-around",
+                                "alignItems": "center",
+                                "padding": "10px",
+                                "width": "45%",
+                                "backgroundColor": "#4B08A1",
+                                "color": "white",
+                                "border": "1px solid #4B08A1",
+                                "borderRadius": "5px",
+                                "cursor": "pointer",
+                                "fontWeight": "600"
+                            }
                         ),
-                        daq.StopButton(
-                            id="az-reverse-button", #reverse button
-                            buttonText="Reverse",
+                        
+                        html.Button(
+                            "Reverse",
+                            id="az-reverse-button",
+                            n_clicks=0,
+                            className="three columns",
                             style={
                                 "display": "flex",
-                                "justify-content": "space-around",
-                                "align-items": "flex-end",
-                                "padding": "10px 10px 10px 10px"
-                            },
-                            className="six columns",
-                            n_clicks=0
+                                "justifyContent": "space-around",
+                                "alignItems": "center",
+                                "padding": "10px",
+                                "width": "45%",
+                                "backgroundColor": "#4B08A1",
+                                "color": "white",
+                                "border": "1px solid #4B08A1",
+                                "borderRadius": "5px",
+                                "cursor": "pointer",
+                                "fontWeight": "600"
+                            }
                         )
                     ],
                         className="row"
@@ -536,17 +566,25 @@ app.layout = html.Div([
                     className='five columns'
                 ),
                 html.Div([
-                    daq.StopButton(
-                        id="go-button", #go button for object coords inputs
-                        buttonText="Go",
-                        style={
-                            "display": "flex",
-                            "justify-content": "center",
-                            "align-items": "flex-end"
-                        },
+                    html.Button(
+                            "Go",
+                            id="go-button",
+                            n_clicks=0,
                             className="three columns",
-                            n_clicks=0
-                    )
+                            style={
+                                "display": "flex",
+                                "justifyContent": "space-around",
+                                "alignItems": "center",
+                                "padding": "10px",
+                                "width": "20%",
+                                "backgroundColor": "#03AF4B",
+                                "color": "white",
+                                "border": "1px solid #056D30",
+                                "borderRadius": "5px",
+                                "cursor": "pointer",
+                                "fontWeight": "600"
+                            }
+                        )
                 ],                
                     style={
                         "align-items": "center",
@@ -922,14 +960,23 @@ app.layout = html.Div([
             ],
             className='twelve columns'
         ),
-
+        html.Div(
+        id="container",
+        style={
+            "backgroundColor": "#3f0099",
+            "color": "white",
+            "position": "relative",
+            "padding": "10px",
+            "top": "450px",
+            "height": "100px"},
+        )
     ],
         style={
             'padding': '0px 10px 15px 10px',
             'marginLeft': 'auto', 
             'marginRight': 'auto',
             "width": "900px",
-            "height": "2150px",
+            "height": "2225px",
             'boxShadow': '0px 0px 15px 10px rgba(204,204,204,0.4)',
         }
 )
