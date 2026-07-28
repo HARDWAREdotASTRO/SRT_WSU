@@ -62,155 +62,151 @@ app.layout = html.Div([
             "color": "white",
             "position": "relative",
             "padding": "10px",
-            "height": "100px"},
+            "height": "100px",
+            "borderRadius": "4px"
+            },
         children=[
-            html.H3("Winona State Small Radio Telescope Control"),
-
-            html.A(
-                html.Img(
-                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPlyNBjmPB7znjvxXWwSnz4wzOi61_nE1HGQ5ftisXgJ13XUNUyBlou6av&s=10%22",
-
-                    style={
-                        "height": "90px",
-                        "position": "absolute",
-                        "top": "10px",
-                        "right": "10px"
-                }
-            ),
-            href="https://www.winona.edu/",
-            target="_blank"
-            ),
-            html.A(
-                html.Img(
-                    src="https://static.freepnglogo.com/images/all_img/github-logo-white-stroke-2a6c.png",
-
-                    style={
-                        "height": "90px",
-                        "position": "absolute",
-                        "top": "10px",
-                        "right": "95px"
-                }
-            ),
-            href="https://github.com/HARDWAREdotASTRO/SRT_WSU",
-            target="_blank"
-        ),
-        html.Div([ #This shows the live date and time under the title
-            html.Div(id='live-date-time'), 
-            dcc.Interval(id='interval-component', interval=1000, n_intervals=0) # Updates every 1000ms
-            ])
-        ]
-    ),
-    
-    html.Div([ #Status monitor to show/list important and relative information
-            dcc.Textarea(
-                id="status-monitor",
-                placeholder=" ",
-                value="",
-                style={
-                    "width": "99.75%",
-                    "height": "75px",
-                    "marginLeft": "0.25%",
-                    "marginBottom": "0%",
-                    },
+            html.H3("Winona State Small Radio Telescope Control"
                 ),
-            ],
-                className="twelve columns",
-                style={
-                    "marginTop": "1%"
-                }
-            ),
-    #Setup for the graph to display objects seen from Earth
-    html.Div([
-        #Dropdown bar to choose which planet will be selected
-        html.Div([
-            dcc.Dropdown(
-                #ID for callback function
-                id='solarsystem',
-                #Dropdown selection options
-                options=[
-                    {'label': 'Object', 'value': 'object'},
-                    {'label': 'Sun', 'value': 'sun'},
-                    {'label': 'Moon', 'value': 'moon'},
-                    {'label': 'Mercury', 'value': 'mercury'},
-                    {'label': 'Venus', 'value': 'venus'},
-                    {'label': 'Mars', 'value': 'mars'},
-                    {'label': 'Jupiter', 'value': 'jupiter'},
-                    {'label': 'Saturn', 'value': 'saturn'},
-                    {'label': 'Uranus', 'value': 'uranus'},
-                    {'label': 'Neptune', 'value': 'neptune'},
-                ],
-                #initial value
-                value='sun'
-            )
-        ]
-        ),
-        #Initialize graph and id for callback
-        html.Div([
-            dcc.Graph(
-                id='graph'
-            )
-        ],
-            className="twelve columns",
-            style={
-                "marginTop": "3%"
-            }
-        )
-    ],
-        #Take up the full width of the page
-        className='twelve columns'
-    ),
+                html.A(
+                    html.Img(
+                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPlyNBjmPB7znjvxXWwSnz4wzOi61_nE1HGQ5ftisXgJ13XUNUyBlou6av&s=10%22",
 
-
-    #Seperate the rest of the page
-    html.Div([
-        #Direct control compartment of the page
-        html.Div([
-                html.Div([
-                    #Title
-                    html.H3(
-                        "Direct Control")
-                ], 
-                    className='Title'
+                        style={
+                            "height": "90px",
+                            "position": "absolute",
+                            "top": "10px",
+                            "right": "10px"
+                    }
                 ),
-            #Two buttons per row
-                html.Div([
-                     daq.StopButton(
-                            id="stop-button", 
-                            buttonText="STOP", #Button STOPS motors
-                            style={
-                                #Not entirely sure how these work, padding helpes seperate boxes, maybe
-                                "display": "center",
-                                "justify-content": "space-around",
-                                "padding": "10px 10px 10px 10px"
-                            },
-                             #Six columns = half the row
-                            className="six columns",
-                            n_clicks=0
+                href="https://www.winona.edu/",
+                target="_blank"
+                ),
+                html.A(
+                    html.Img(
+                        src="https://static.freepnglogo.com/images/all_img/github-logo-white-stroke-2a6c.png",
+
+                        style={
+                            "height": "90px",
+                            "position": "absolute",
+                            "top": "10px",
+                            "right": "95px"
+                    }
+                ),
+                href="https://github.com/HARDWAREdotASTRO/SRT_WSU",
+                target="_blank"
+                ),
+                html.Div([ #This shows the live date and time under the title
+                    html.Div(id='live-date-time'), 
+                        dcc.Interval(id='interval-component', interval=1000, n_intervals=0) # Updates every 1000ms
+                        ]
+                    )
+                ]
+            ), 
+            html.Div([ #Status monitor to show/list important and relative information
+                dcc.Textarea(
+                    id="status-monitor",
+                    placeholder=" ",
+                    value="",
+                    style={
+                        "width": "99.75%",
+                        "height": "75px",
+                        "marginLeft": "0.25%",
+                        "marginBottom": "0%",
+                        },
                         ),
-                    daq.StopButton(
-                            id="go-home-button",
-                            buttonText="HOME", #Button makes telescope go HOME
-                            style={
-                                "display": "flex-right",
-                                "justify-content": "space-around",
-                                "padding": "10px 10px 10px 10px"
-                            },
-                            className="six columns",
-                            n_clicks=0
-                        ),
-                   
-                ],
+                    ],
+                    className="twelve columns",
                     style={
-                        #Box shadow gives a light border
-                        "align-items": "center",
-                        'boxShadow': '1px 1px 1px 1px rgba(204,204,204,0.4)',
-                        "padding": "10px 10px 10px 20px"
-                    },
-                    #Take up the whole row
-                    className="row"
-                ),
+                        "marginTop": "1%"
+                    }
+            ),
+            #Setup for the graph to display objects seen from Earth
+            html.Div([
+                #Dropdown bar to choose which planet will be selected
                 html.Div([
-                    daq.StopButton(
+                    dcc.Dropdown(
+                        #ID for callback function
+                        id='solarsystem',
+                        #Dropdown selection options
+                        options=[
+                            {'label': 'Object', 'value': 'object'},
+                            {'label': 'Sun', 'value': 'sun'},
+                            {'label': 'Moon', 'value': 'moon'},
+                            {'label': 'Mercury', 'value': 'mercury'},
+                            {'label': 'Venus', 'value': 'venus'},
+                            {'label': 'Mars', 'value': 'mars'},
+                            {'label': 'Jupiter', 'value': 'jupiter'},
+                            {'label': 'Saturn', 'value': 'saturn'},
+                            {'label': 'Uranus', 'value': 'uranus'},
+                            {'label': 'Neptune', 'value': 'neptune'},
+                        ],
+                        #initial value
+                        value='sun'
+                        )
+                    ]
+                ),
+                #Initialize graph and id for callback
+                html.Div([
+                    dcc.Graph(id='graph')
+                    ],
+                    className="twelve columns",
+                    style={
+                        "marginTop": "3%"
+                    }
+                )
+                ],
+                #Take up the full width of the page
+                className='twelve columns'
+            ),
+
+            #Seperate the rest of the page
+            html.Div([
+                #Direct control compartment of the page
+                html.Div([
+                        html.Div([
+                            #Title
+                            html.H3("Direct Control")
+                        ], 
+                        className='Title'
+                        ),
+                    #Two buttons per row
+                        html.Div([
+                            daq.StopButton(
+                                id="stop-button", 
+                                buttonText="STOP",
+                                style={
+                                    "display": "center",
+                                    "justify-content": "space-around",
+                                    "padding": "10px 10px 10px 10px"
+                                },
+                                    #Six columns = half the row
+                                className="six columns",
+                                n_clicks=0
+                                ),
+                            daq.StopButton(
+                                id="go-home-button",
+                                buttonText="HOME", #Button makes telescope go HOME
+                                style={
+                                    "display": "flex-right",
+                                    "justify-content": "space-around",
+                                    "padding": "10px 10px 10px 10px"
+                                },
+                                className="six columns",
+                                n_clicks=0
+                                ),
+                            ],
+                            style={
+                                #Box shadow gives a light border
+                                "align-items": "center",
+                                'boxShadow': '1px 1px 1px 1px rgba(204,204,204,0.4)',
+                                "padding": "10px 10px 10px 20px"
+                            },
+                            #Take up the whole row
+                            className="row"
+                        ),
+                        html.Div([
+                            daq.StopButton(
                                 id="zero-button",
                                 buttonText="Zero", #Button will ZERO the SRT
                                 style={
@@ -220,303 +216,288 @@ app.layout = html.Div([
                                 },
                                 className="six-columns",
                                 n_clicks=0
-                              )  
-                ],
-                    style={
-                        #Box shadow gives a light border
-                        "align-items": "center",
-                        'boxShadow': '1px 1px 1px 1px rgba(204,204,204,0.4)',
-                        "padding": "10px 10px 10px 20px"
-                    },
-                    #Take up the whole row
-                    className="row"
-                ),    
-            #Seperate the motor controls for each motor
-                html.Div([
-                    html.Div([
-                        html.H5(
-                            "Altitude Motor" #Altitude motor control
-                        )
-                    ], 
-                        className='Title'
-                    ),
-                    html.Div([
-                        html.Button(
-                            "Forward",
-                            id="alt-forward-button",
-                            n_clicks=0,
-                            className="three columns",
+                                ), 
+                            ],
                             style={
-                                "display": "flex",
-                                "justifyContent": "space-around",
-                                "alignItems": "center",
-                                "padding": "10px",
-                                "width": "45%",
-                                "backgroundColor": "#4B08A1",
-                                "color": "white",
-                                "border": "1px solid #4B08A1",
-                                "borderRadius": "5px",
-                                "cursor": "pointer",
-                                "fontWeight": "600"
-                            }
-                        ),
-                        
-                        html.Button(
-                            "Reverse",
-                            id="alt-reverse-button",
-                            n_clicks=0,
-                            className="three columns",
-                            style={
-                                "display": "flex",
-                                "justifyContent": "space-around",
-                                "alignItems": "center",
-                                "padding": "10px",
-                                "width": "45%",
-                                "backgroundColor": "#4B08A1",
-                                "color": "white",
-                                "border": "1px solid #4B08A1",
-                                "borderRadius": "5px",
-                                "cursor": "pointer",
-                                "fontWeight": "600"
-                            }
-                        )
-                    ],
-                        className="row"
-                    ),
-                    html.Div([
-                        #A slider to control the motor speed
-                        dcc.Slider(
-                            id="alt-slider",
-                            min=0,
-                            max=100,
-                            value=100
-                        ),
-                        html.Div(
-                            id='speed-control-alt')
-                        
-                    ],
+                                #Box shadow gives a light border
+                                "align-items": "center",
+                                'boxShadow': '1px 1px 1px 1px rgba(204,204,204,0.4)',
+                                "padding": "10px 10px 10px 20px"
+                            },
+                            #Take up the whole row
+                            className="row"
+                        ),    
+                        #Seperate the motor controls for each motor
+                        html.Div([
+                            html.Div([
+                                html.H5("Altitude Motor") #Altitude motor control
+                                ], 
+                                className='Title'
+                            ),
+                            html.Div([
+                                html.Button(
+                                    "Forward",
+                                    id="alt-forward-button",
+                                    n_clicks=0,
+                                    className="three columns",
+                                    style={
+                                        "display": "flex",
+                                        "justifyContent": "space-around",
+                                        "alignItems": "center",
+                                        "padding": "10px",
+                                        "width": "45%",
+                                        "backgroundColor": "#4B08A1",
+                                        "color": "white",
+                                        "border": "1px solid #4B08A1",
+                                        "borderRadius": "5px",
+                                        "cursor": "pointer",
+                                        "fontWeight": "600"
+                                    }
+                                ),
+                                html.Button(
+                                    "Reverse",
+                                    id="alt-reverse-button",
+                                    n_clicks=0,
+                                    className="three columns",
+                                    style={
+                                        "display": "flex",
+                                        "justifyContent": "space-around",
+                                        "alignItems": "center",
+                                        "padding": "10px",
+                                        "width": "45%",
+                                        "backgroundColor": "#4B08A1",
+                                        "color": "white",
+                                        "border": "1px solid #4B08A1",
+                                        "borderRadius": "5px",
+                                        "cursor": "pointer",
+                                        "fontWeight": "600"
+                                    }
+                                )
+                            ],
+                            className="row"
+                            ),
+                            html.Div([
+                                #A slider to control the motor speed
+                                dcc.Slider(
+                                    id="alt-slider",
+                                    min=0,
+                                    max=100,
+                                    value=100
+                                ),
+                                html.Div(id='speed-control-alt')
+                                ],
+                                style={
+                                "padding": "10px 10px 10px 20px"
+                                },
+                                className="row"
+                            )
+                        ],
                         style={
-                        "padding": "10px 10px 10px 20px"
-                    },
+                            "align-items": "center",
+                            'boxShadow': '1px 1px 1px 1px rgba(204,204,204,0.4)',
+                            "padding": "10px 10px 10px 20px"
+                        },
                         className="row"
-                    )
-                ],
+                        ),
+                        html.Div([
+                            html.Div([
+                                html.H5("Azimuth Motor") #Azimuth motor control
+                            ], 
+                            className='Title'
+                            ),
+                            html.Div([
+                                html.Button(
+                                    "Forward",
+                                    id="az-forward-button",
+                                    n_clicks=0,
+                                    className="three columns",
+                                    style={
+                                        "display": "flex",
+                                        "justifyContent": "space-around",
+                                        "alignItems": "center",
+                                        "padding": "10px",
+                                        "width": "45%",
+                                        "backgroundColor": "#4B08A1",
+                                        "color": "white",
+                                        "border": "1px solid #4B08A1",
+                                        "borderRadius": "5px",
+                                        "cursor": "pointer",
+                                        "fontWeight": "600"
+                                    }
+                                ),
+                                html.Button(
+                                    "Reverse",
+                                    id="az-reverse-button",
+                                    n_clicks=0,
+                                    className="three columns",
+                                    style={
+                                        "display": "flex",
+                                        "justifyContent": "space-around",
+                                        "alignItems": "center",
+                                        "padding": "10px",
+                                        "width": "45%",
+                                        "backgroundColor": "#4B08A1",
+                                        "color": "white",
+                                        "border": "1px solid #4B08A1",
+                                        "borderRadius": "5px",
+                                        "cursor": "pointer",
+                                        "fontWeight": "600"
+                                    }
+                                )
+                            ],
+                            className="row"
+                            ),
+                            html.Div([
+                                dcc.Slider(
+                                    id="az-slider", #Azimuth speed slider
+                                    min=0,
+                                    max=100,
+                                    value=100
+                                ),
+                                html.Div(id='speed-control-az') 
+                                ],
+                                style={
+                                "padding": "10px 10px 10px 20px"
+                                },
+                                className="row"
+                            )
+                        ],
+                        style={
+                            "align-items": "center",
+                            'boxShadow': '1px 1px 1px 1px rgba(204,204,204,0.4)',
+                            "padding": "10px 10px 10px 20px"
+                        },
+                        className="row"
+                        ),             
+                    ],
                     style={
                         "align-items": "center",
-                        'boxShadow': '1px 1px 1px 1px rgba(204,204,204,0.4)',
+                        "border": "1px solid #2a3f5f",
+                        "border-radius": "4px",
+                        #'boxShadow': '0px 0px 5px 5px rgba(204,204,204,0.4)',
                         "padding": "10px 10px 10px 20px"
                     },
-                        className="row"
+                    #Direct control box takes a third of the page
+                    className="four columns"
                 ),
+                    
                 html.Div([
-                    html.Div([
-                        html.H5(
-                            "Azimuth Motor" #Azimuth motor control
-                        )
-                    ], 
-                        className='Title'
-                    ),
-                    html.Div([
-                        html.Button(
-                            "Forward",
-                            id="az-forward-button",
-                            n_clicks=0,
-                            className="three columns",
-                            style={
-                                "display": "flex",
-                                "justifyContent": "space-around",
-                                "alignItems": "center",
-                                "padding": "10px",
-                                "width": "45%",
-                                "backgroundColor": "#4B08A1",
-                                "color": "white",
-                                "border": "1px solid #4B08A1",
-                                "borderRadius": "5px",
-                                "cursor": "pointer",
-                                "fontWeight": "600"
-                            }
-                        ),
-                        
-                        html.Button(
-                            "Reverse",
-                            id="az-reverse-button",
-                            n_clicks=0,
-                            className="three columns",
-                            style={
-                                "display": "flex",
-                                "justifyContent": "space-around",
-                                "alignItems": "center",
-                                "padding": "10px",
-                                "width": "45%",
-                                "backgroundColor": "#4B08A1",
-                                "color": "white",
-                                "border": "1px solid #4B08A1",
-                                "borderRadius": "5px",
-                                "cursor": "pointer",
-                                "fontWeight": "600"
-                            }
-                        )
-                    ],
-                        className="row"
-                    ),
-                    html.Div([
-                        dcc.Slider(
-                            id="az-slider", #Azimuth speed slider
-                            min=0,
-                            max=100,
-                            value=100
-                        ),
-                        html.Div(
-                            id='speed-control-az')
-                        
-                    ],
-                        style={
-                        "padding": "10px 10px 10px 20px"
-                    },
-                        className="row"
-                    )
-                ],
-                    style={
-                        "align-items": "center",
-                        'boxShadow': '1px 1px 1px 1px rgba(204,204,204,0.4)',
-                        "padding": "10px 10px 10px 20px"
-                    },
-                        className="row"
-                ),            
-                
-            ],
-                style={
-                    "align-items": "center",
-                    "border": "1px solid #2a3f5f",
-                    "border-radius": "4px",
-                    #'boxShadow': '0px 0px 5px 5px rgba(204,204,204,0.4)',
-                    "padding": "10px 10px 10px 20px"
-                },
-                #Direct control box takes a third of the page
-                className="four columns"
-            ),
-            
-
-            html.Div([
-                #A box to callback the srt's current direction
-                html.Div([
-                    html.Div([
-                        html.H3(
-                            "SRT Direction"
-                        )
-                    ], 
-                        className='Title'
-                    ),
+                    #A box to callback the srt's direction and input direction
                     html.Div([
                         html.Div([
+                            html.H3("SRT Direction")
+                        ], 
+                        className='Title'
+                        ),
+                        html.Div([
                             html.Div([
-                                "Altitude:  " #updates as SRT moves in altitude 
-                            ],
+                                html.Div([
+                                    "Altitude:  " #updates as SRT moves in altitude 
+                                ],
                                 style={
                                     'textAlign': 'right'
                                 },
                                 className="three columns"
-                            ),
-                            html.Div(
-                                id="altitude",
-                                className="three columns",
-                                style={
-                                    'marginRight': '20px'
-                                }
-                            )
-                        ], 
+                                ),
+                                html.Div(
+                                    id="altitude",
+                                    className="three columns",
+                                    style={
+                                        'marginRight': '20px'
+                                    }
+                                )
+                            ], 
                             className="twelve columns"
-                        ),
-                        html.Div([
+                            ),
                             html.Div([
-                                "Azimuth:  " #updates when SRT moves in the azimuth direction
-                            ],
+                                html.Div([
+                                    "Azimuth:  " #updates when SRT moves in the azimuth direction
+                                ],
                                 style={
                                     'textAlign': 'right'
                                 },
                                 className="three columns"
-                            ),
-                            html.Div(
-                                id="azimuth",
-                                className="three columns",
-                                style={
-                                    'marginRight': '20px'
-                                }
-                            )
-                        ], 
+                                ),
+                                html.Div(
+                                    id="azimuth",
+                                    className="three columns",
+                                    style={
+                                        'marginRight': '20px'
+                                    }
+                                )
+                            ], 
                             className="twelve columns"
-                        )
-                    ],
+                            )
+                        ],
                         style={
                             "align-items": "center",
                             'boxShadow': '1px 1px 1px 1px rgba(204,204,204,0.4)',
                             "padding": "10px 10px 10px 20px"
                         },
                         className="twelve columns"
-                    )
-                ],
+                        )
+                    ],
                     #Gets half the row, shares with Input direction
                     className="six columns"
-                ),
-                html.Div([
-                    html.Div([
-                        html.H3(
-                            "Input Direction" #direction the user wants SRT to go
-                        )
-                    ], 
-                        className='Title'
                     ),
                     html.Div([
-                        #Reports alt az of ra and dec user input
                         html.Div([
-                            html.Div([
-                                "Altitude:  "
-                            ],
-                                style={
-                                    'textAlign': 'right'
-                                },
-                                className="three columns"
-                            ),
-                            html.Div(
-                                id="alt",
-                                className="three columns",
-                                style={
-                                    'marginRight': '20px'
-                                }
-                            )
+                            html.H3("Input Direction" )
                         ], 
-                            className="twelve columns"
+                        className='Title'
                         ),
                         html.Div([
-                            html.Div(
-                                "Azimuth:   ",
+                            #Reports alt az of ra and dec user input
+                            html.Div([
+                                html.Div([
+                                    "Altitude:  "
+                                ],
                                 style={
                                     'textAlign': 'right'
                                 },
                                 className="three columns"
-                            ),
-                            html.Div(
-                                id="az",
-                                className="four columns",
-                                style={
-                                    'marginRight': '20px'
-                                }
-                            )
-                        ], 
+                                ),
+                                html.Div(
+                                    id="alt",
+                                    className="three columns",
+                                    style={
+                                        'marginRight': '20px'
+                                    }
+                                )
+                            ], 
                             className="twelve columns"
-                        )
-                    ],
+                            ),
+                            html.Div([
+                                html.Div([
+                                    "Azimuth:   ",
+                                ],
+                                style={
+                                    'textAlign': 'right'
+                                },
+                                className="three columns"
+                                ),
+                                html.Div(
+                                    id="az",
+                                    className="four columns",
+                                    style={
+                                        'marginRight': '20px'
+                                    }
+                                )
+                            ], 
+                            className="twelve columns"
+                            )
+                        ],
                         style={
                             "align-items": "center",
                             'boxShadow': '1px 1px 1px 1px rgba(204,204,204,0.4)',
                             "padding": "10px 10px 10px 20px"
                         },
                         className="twelve columns"
-                    )
-                ],
+                        )
+                    ],
                     className="six columns"
-                )                    
-            ],
+                    )                    
+                ],
                 style={
                     "align-items": "center",
                     "border": "1px solid #2a3f5f",
@@ -526,62 +507,59 @@ app.layout = html.Div([
                     "MarginBottom": "2%"
                 },
                 className="eight columns",
-        
-            ),
-            html.Div([
-                #User input object
-                html.Div([
-                        html.H3(
-                            "Object"
-                        )
-                ], 
-                    className='Title'
-                ),
-                html.Div([
-                    dcc.Input(
-                        id='RA', 
-                        value='24d20m30s', 
-                        type='text',
-                        className="ten columns"
-                    ),
-                    html.H5(
-                        "Right Ascension", 
-                        style={
-                            "textAlign": "bottom"
-                        }
-                    )
-                ], 
-                    style={
-                        "align-items": "center",
-                        'boxShadow': '1px 1px 1px 1px rgba(204,204,204,0.4)',
-                        "padding": "10px 10px 10px 20px"
-                    },
-                    className='five columns'
                 ),
 
                 html.Div([
-                    dcc.Input(
-                        id='DEC', 
-                        value='12d24m35s', 
-                        type='text',
-                        className="ten columns"
+                    #User input object
+                    html.Div([
+                        html.H3("Object")
+                    ], 
+                    className='Title'
                     ),
-                    html.H5(
-                        "Declination", 
-                        style={
-                            "textAlign": "bottom"
-                        }
-                    )
-                ],
+                    html.Div([
+                        dcc.Input(
+                            id='RA', 
+                            value='24d20m30s', 
+                            type='text',
+                            className="ten columns"
+                        ),
+                        html.H5(
+                            "Right Ascension", 
+                            style={
+                                "textAlign": "bottom"
+                            }
+                        )
+                    ], 
                     style={
                         "align-items": "center",
                         'boxShadow': '1px 1px 1px 1px rgba(204,204,204,0.4)',
                         "padding": "10px 10px 10px 20px"
                     },
                     className='five columns'
-                ),
-                html.Div([
-                    html.Button(
+                    ),
+                    html.Div([
+                        dcc.Input(
+                            id='DEC', 
+                            value='12d24m35s', 
+                            type='text',
+                            className="ten columns"
+                        ),
+                        html.H5(
+                            "Declination", 
+                            style={
+                                "textAlign": "bottom"
+                            }
+                        )
+                    ],
+                    style={
+                        "align-items": "center",
+                        'boxShadow': '1px 1px 1px 1px rgba(204,204,204,0.4)',
+                        "padding": "10px 10px 10px 20px"
+                    },
+                    className='five columns'
+                    ),
+                    html.Div([
+                        html.Button(
                             "Go",
                             id="go-button",
                             n_clicks=0,
@@ -600,15 +578,14 @@ app.layout = html.Div([
                                 "fontWeight": "600"
                             }
                         )
-                ],                
+                    ],                
                     style={
                         "align-items": "center",
                         "padding": "10px 10px 10px 20px"
                     },
                     className="twelve columns"
-                ),
-                
-            ],
+                    ),
+                ],
                 style={
                     "align-items": "center",
                     "border": "1px solid #2a3f5f",
@@ -617,29 +594,58 @@ app.layout = html.Div([
                     "marginTop": "2%",
                     "marginBottom": "2%",
                     "padding": "10px 10px 10px 10px",
-                    },
+                },
                 className="eight columns"
-            ),
+                ),
             
-            html.Div([
+                html.Div([
                     #Select how to observe
                     html.Div([
-                            html.H3(
-                                "Observing Method"
-                            )
-                        ], 
-                            className='Title'
+                        html.H3("Observing Method")
+                    ], 
+                    className='Title'
+                    ),
+                    html.Div([
+                        daq.StopButton(
+                            id="record-button",
+                            buttonText="RECORD",
+                            n_clicks=0,
+                            style={
+                                "margin": "5px",
+                                "display": "flex",
+                                "justify-content": "space-around",
+                                "align-items": "center",
+                                "position": "absolute",
+                                "bottom": "10px",
+                                "left": "-100px",
+                                "right": "-550px",
+                                "top": "1225px",
+                            },
                         ),
+                        daq.StopButton(
+                            id="stoprecord-button",
+                            buttonText="STOP",
+                            n_clicks=0,
+                            style={
+                                "margin": "5px",
+                                "display": "flex",
+                                "justify-content": "space-around",
+                                "align-items": "center",
+                                "position": "absolute",
+                                "bottom": "10px",
+                                "left": "125px",
+                                "right": "-550px",
+                                "top": "1225px"
+                                },
+                        ),
+                    ]
+                    ),
+                    html.Div([
                         html.Div([
-                            html.Div([
-                                html.H6(
-                                    "Method Select"
-                                )
+                            html.H6("Method Select")
                             ], 
-                                className='Title'
-                                
+                            className='Title'   
                             ),
-                            
                             #Pick the method
                             dcc.RadioItems(
                                 id="select",
@@ -649,25 +655,23 @@ app.layout = html.Div([
                                     {'label': 'Scan', 'value': 'Scan'}
                                 ],
                                 value='Goto'
-                            ),
+                                ),
                         ],
-                            style={
-                                "align-items": "center",
-                                'boxShadow': '1px 1px 1px 1px rgba(204,204,204,0.4)',
-                                "padding": "10px 10px 5px 10px"
-                            },
-                            className="twelve columns"
-                        ),
+                        style={
+                            "align-items": "center",
+                            'boxShadow': '1px 1px 1px 1px rgba(204,204,204,0.4)',
+                            "padding": "10px 10px 5px 10px"
+                        },
+                        className="twelve columns"
+                    ),
                     html.Div([
                         #Boxes for specific method instructions
                         html.Div([
                             html.Div([
                                 html.Div([
-                                    html.H6(
-                                        "Scan"
-                                    )
+                                    html.H6("Scan")
                                 ], 
-                                    className='Title'
+                                className='Title'
                                 ),
                                 dcc.RadioItems(
                                     id='scanner',
@@ -678,18 +682,16 @@ app.layout = html.Div([
                                     value='Obj'
                                 )
                             ],
-                                className="four columns"
+                            className="four columns"
                             ),
                             html.Div([
                                 html.Div([
-                                    html.H6(
-                                        "Box Size"
-                                    )
+                                    html.H6("Box Size")
                                 ], 
-                                    className='Title',
-                                    style={
+                                className='Title',
+                                style={
                                     "marginLeft": "-30px"
-                                    }
+                                }
                                 ),
                                 html.Div([
                                     dcc.Input(
@@ -710,134 +712,127 @@ app.layout = html.Div([
                                     )
                                 ]
                                 ) 
-                        ],
+                            ],
                             className="four columns"
-                        ),
-                        html.Div([
-                            html.Div([
-                                html.H6(
-                                    "Scan Speed"
-                                )
-                            ], 
-                                className='Title',
-                                style={
-                                    "marginLeft": "-30px"
-                                    }
                             ),
                             html.Div([
-                                dcc.Input(
-                                    id='scanSpeed', 
-                                    value='10', 
-                                    type='text',
-                                    className="five columns",
-                                    style={
-                                        "marginLeft": "-30px"
-                                    }
-                                ),
-                                html.H5(
-                                    "°/min", 
-                                    style={
-                                        "paddingRight": "45%",
-                                        "textAlign": "right"
-                                    }
-                                )
-                            ], 
-                                className='row'
-                            )
-                    ],
-                        className="four columns"
-                    ),
-                    html.Div([
-                        html.Div([
-                            html.H6(
-                                "Frequency Start"
-                                )
-                            ], 
-                                className='Title',
-                                    style={
-                                    "marginLeft": "-30px"
-                                    }
-                            ),
-                            html.Div([
-                                dcc.Input(
-                                    id='frequencyStart', 
-                                    value='1420', 
-                                    type='text',
-                                    className="five columns",
-                                        style={
-                                            "marginLeft": "-30px"
-                                        }
-                                ),
-                                html.H5(
-                                    "MHz", 
-                                    style={
-                                        "paddingRight": "50%",
-                                        "textAlign": "right"
-                                    }
-                                )
-                            ], 
-                                className='row'
-                            )
-                    ],
-                        className="five columns"
-                    ),
-                    html.Div([
-                        html.Div([
-                            html.H6(
-                                    "End"
-                                    )
+                                html.Div([
+                                    html.H6("Scan Speed")
                                 ], 
                                 className='Title',
                                 style={
-                                    "marginTop": "-85px",
-                                    "marginLeft": "325px"
-                                    }
-                        ),
-                        html.Div([
-                            dcc.Input(
-                                id='frequencyEnd', 
-                                value='1420.8', 
-                                type='text',
-                                className="five columns",
-                                style={
-                                    "marginTop": "0px",
-                                    "marginLeft": "325px"
-                                    }
-                        ),
-                            html.H5(
-                                    "MHz", 
-                                    style={
-                                        "textAlign": "right",
-                                        "marginRight": "-245px"
+                                    "marginLeft": "-30px"
+                                }
+                                ),
+                                html.Div([
+                                    dcc.Input(
+                                        id='scanSpeed', 
+                                        value='10', 
+                                        type='text',
+                                        className="five columns",
+                                        style={
+                                            "marginLeft": "-30px"
+                                        }
+                                    ),
+                                    html.H5(
+                                        "°/min", 
+                                        style={
+                                            "paddingRight": "45%",
+                                            "textAlign": "right"
                                         }
                                     )
                                 ], 
                                 className='row'
                                 )
                             ],
+                            className="four columns"
+                            ),
+                            html.Div([
+                                html.Div([
+                                    html.H6("Frequency Start")
+                                    ], 
+                                    className='Title',
+                                    style={
+                                        "marginLeft": "-30px"
+                                    }
+                                ),
+                                html.Div([
+                                    dcc.Input(
+                                        id='frequencyStart', 
+                                        value='1420', 
+                                        type='text',
+                                        className="five columns",
+                                        style={
+                                            "marginLeft": "-30px"
+                                        }
+                                    ),
+                                    html.H5(
+                                        "MHz", 
+                                        style={
+                                            "paddingRight": "50%",
+                                            "textAlign": "right"
+                                        }
+                                    )
+                                    ], 
+                                    className='row'
+                                )
+                            ],
                             className="five columns"
-                        )
-                    ],
+                            ),
+                            html.Div([
+                                html.Div([
+                                    html.H6("End")
+                                    ], 
+                                    className='Title',
+                                    style={
+                                        "marginTop": "-85px",
+                                        "marginLeft": "325px"
+                                    }
+                                ),
+                                html.Div([
+                                    dcc.Input(
+                                        id='frequencyEnd', 
+                                        value='1420.8', 
+                                        type='text',
+                                        className="five columns",
+                                        style={
+                                            "marginTop": "0px",
+                                            "marginLeft": "325px"
+                                        }
+                                    ),
+                                    html.H5(
+                                        "MHz", 
+                                        style={
+                                            "textAlign": "right",
+                                            "marginRight": "-245px"
+                                            }
+                                        )
+                                    ], 
+                                    className='row'
+                                    )
+                                ],
+                                className="five columns"
+                            )
+                        ],
                         style={
                             "align-items": "center",
                             'boxShadow': '1px 1px 1px 1px rgba(204,204,204,0.4)',
                             "padding": "10px 10px 10px 10px"
                         },
                         className="row"
-                    )
+                        )
                     ]
                     ),
                 ],
-                    style={
-                        "align-items": "center",
-                        "border": "1px solid #2a3f5f",
-                        "border-radius": "4px",
-                        "padding": "10px 10px 10px 10px"
-                        },
-                    className="eight columns"
+                style={
+                    "align-items": "center",
+                    "border": "1px solid #2a3f5f",
+                    "border-radius": "4px",
+                    "padding": "10px 10px 10px 10px",
+                },
+                className="eight columns"
                 ),
 
-    
             html.Div([
                 html.Div(id='go-home-button-count'),
                 html.Div(id='stop-button-count'),
@@ -865,216 +860,161 @@ app.layout = html.Div([
                 dcc.Interval(
                     id='refresher3',
                     interval=10000)
-            ],
+                ],
                 style={
                     "visibility": "hidden"
                 }
             )
-    ],
+        ],
         className="row"
-    ),
-        html.Div(
-            id="data-box",
-            children=[
-                html.H3(
-                    "Data Settings",
-                    style={
-                        "position": "absolute",
-                        "top": "5px",
-                        "left": "10px",
-                        "margin": "0px",
-                    }
-                ),
-                html.Div(
-                    [
-                    daq.StopButton(
-                        id="load-button",
-                        buttonText="LOAD",
-                        n_clicks=0,
-                        style={
-                            "margin": "5px",
-                            "display": "flex",
-                            "justify-content": "space-around",
-                            "align-items": "center",
-                            "position": "absolute",
-                            "bottom": "10px",
-                            "left": "-100px",
-                            "right": "10px",
-                            "top": "-50px"
-                            },
-                        ),
-                    daq.StopButton(
-                        id="save-button",
-                        buttonText="SAVE",
-                        n_clicks=0,
-                        style={
-                            "margin": "5px",
-                            "display": "flex",
-                            "justify-content": "space-around",
-                            "align-items": "center",
-                            "position": "absolute",
-                            "bottom": "10px",
-                            "left": "125px",
-                            "right": "10px",
-                            "top": "-50px"
-                            },
-                        ),
-                        daq.StopButton(
-                        id="reset-button",
-                        buttonText="RESET",
-                        n_clicks=0,
-                        style={
-                            "margin": "5px",
-                            "display": "flex",
-                            "justify-content": "space-around",
-                            "align-items": "center",
-                            "position": "absolute",
-                            "bottom": "10px",
-                            "left": "125px",
-                            "right": "10px",
-                            "top": "75px"
-                            },
-                        ),
-                        daq.StopButton(
-                        id="export-button",
-                        buttonText="EXPORT",
-                        n_clicks=0,
-                        style={
-                            "margin": "5px",
-                            "display": "flex",
-                            "justify-content": "space-around",
-                            "align-items": "center",
-                            "position": "absolute",
-                            "bottom": "10px",
-                            "left": "-100px",
-                            "right": "10px",
-                            "top": "75px"
-                            },
-                        ),
-                    ],
-                    
-                ),
-            ],
-            style={
-                "border": "1px solid black",
-                "height": "225px",
-                "width": "28%",
-                "padding": "10px",
-                "marginTop": "-250px",
-                "marginBottom": "3%",
-                "position": "relative",
-            },
         ),
-        html.Div([
-            dcc.Graph(id='live-hydrogen-graph'),
-            dcc.Interval(
-                id='interval-component1',
-                 interval=1*1000, # Update every 1000 milliseconds (1 second)
-                n_intervals=0
-                )
+
+            html.Div(
+                id="data-box",
+                children=[
+                    html.H3(
+                        "Data Settings",
+                        style={
+                            "position": "absolute",
+                            "top": "5px",
+                            "left": "10px",
+                            "margin": "0px",
+                        }
+                    ),
+                    html.Div([
+                        daq.StopButton(id="load-button",buttonText="LOAD"),
+                        daq.StopButton(id="save-button", buttonText="SAVE"),
+                        daq.StopButton(id="export-button", buttonText="EXPORT"),
+                        daq.StopButton(id="reset-button",buttonText="RESET"),
+                    ],
+                    style={
+                        "display": "grid",
+                        "gridTemplateColumns": "1fr 1fr",
+                        "gap": "px",
+                        "marginTop": "50px",
+                    },
+                    )
+                ],
+                style={
+                    "border": "1px solid black",
+                    "height": "245px",
+                    "padding": "10px",
+                    "marginTop": "-245px",
+                    "marginBottom": "3%",
+                    "position": "relative",
+                    "left": "-35px",
+                    "borderRadius": "4px"
+                },
+                className="four columns"
+            ),
+        
+            html.Div([ # Update interval every 1000 milliseconds (1 second)
+                dcc.Graph(id='live-hydrogen-graph'),
+                dcc.Interval(id='interval-component1',interval=1*1000, n_intervals=0)
             ],
             className='twelve columns'
-        ),
-        html.Div(
-        id="containerbottom",
-        style={
-            "backgroundColor": "#3f0099",
-            "color": "white",
-            "position": "relative",
-            "padding": "10px",
-            "top": "450px",
-            "height": "100px"
-            },
-        children=[
-            html.A(
-                html.Img(
-                    src="https://upload.wikimedia.org/wikipedia/en/c/cb/Raspberry_Pi_Logo.svg",
-                    style={
-                        "height": "55px",
-                        "position": "absolute",
-                        "top": "10px",
-                        "left": "10px"
-                    }
-                ),
-                href="https://www.raspberrypi.com/",
-                target="_blank"
             ),
-            html.A(
-                html.Img(
-                    src="https://a.pololu-files.com/picture/0J7078.200h.jpg?4922c8bb56daed54a188c035bf8fa593",
-                    style={
-                        "height": "35px",
-                        "position": "absolute",
-                        "bottom": "10px",
-                        "left": "12.5px"
-                    }
-                ),
-                href="https://www.pololu.com/",
-                target="_blank"
-            ),
-            html.A(
-                html.Img(
-                    src="https://cdn.freebiesupply.com/logos/thumbs/2x/arduino-1-logo.png",
-                    style={
-                        "height": "52px",
-                        "position": "absolute",
-                        "top": "10px",
-                        "left": "55px"
-                    }
-                ),
-                href="https://www.arduino.cc/",
-                target="_blank"
-            ),
-            html.A(
-                html.Img(
-                    src="https://raw.githubusercontent.com/HARDWAREdotASTRO/HARDWAREdotASTRO.github.io/refs/heads/master/images/image00.png",
-                    style={
-                        "height": "52px",
-                        "position": "absolute",
-                        "top": "10px",
-                        "left": "120px"
-                    }
-                ),
-                href="https://github.com/HARDWAREdotASTRO",
-                target="_blank"
-            ),
-            html.A(
-                html.Img(
-                    src="https://blogs.winona.edu/alumni/wp-content/uploads/sites/3/2021/03/WSU-Foundation-Logo-Purple.jpg",
-                    style={
-                        "height": "100px",
-                        "position": "absolute",
-                        "bottom": "10px",
-                        "right": "10px"
-                    }
-                ),
-                href="https://www.winona.edu/foundation/",
-                target="_blank"
-            ),
-            html.A(
-                html.Img(
-                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTD4Zm2nU_ru4P_aw-465NI3EeRdRL9X0HETfj5z3sN5Y8kN8mY-Co7e8w&s=10",
-                    style={
-                        "height": "100px",
-                        "position": "absolute",
-                        "bottom": "10px",
-                        "right": "193px"
-                    }
-                ),
-                href="https://www.winona.edu/academics/colleges/science-engineering/physics-department/",
-                target="_blank"
-            ),
-        ]
-        )
+
+            html.Div(id="containerbottom",
+                style={
+                    "backgroundColor": "#3f0099",
+                    "color": "white",
+                    "position": "relative",
+                    "padding": "10px",
+                    "top": "475px",
+                    "height": "100px",
+                    "borderRadius": "4px"
+                },
+                children=[
+                    html.A(
+                        html.Img(
+                            src="https://upload.wikimedia.org/wikipedia/en/c/cb/Raspberry_Pi_Logo.svg",
+                            style={
+                                "height": "55px",
+                                "position": "absolute",
+                                "top": "10px",
+                                "left": "10px"
+                            }
+                        ),
+                        href="https://www.raspberrypi.com/",
+                        target="_blank"
+                    ),
+                    html.A(
+                        html.Img(
+                            src="https://a.pololu-files.com/picture/0J7078.200h.jpg?4922c8bb56daed54a188c035bf8fa593",
+                            style={
+                                "height": "35px",
+                                "position": "absolute",
+                                "bottom": "10px",
+                                "left": "12.5px"
+                            }
+                        ),
+                        href="https://www.pololu.com/",
+                        target="_blank"
+                    ),
+                    html.A(
+                        html.Img(
+                            src="https://cdn.freebiesupply.com/logos/thumbs/2x/arduino-1-logo.png",
+                            style={
+                                "height": "52px",
+                                "position": "absolute",
+                                "top": "10px",
+                                "left": "55px"
+                            }
+                        ),
+                        href="https://www.arduino.cc/",
+                        target="_blank"
+                    ),
+                    html.A(
+                        html.Img(
+                            src="https://raw.githubusercontent.com/HARDWAREdotASTRO/HARDWAREdotASTRO.github.io/refs/heads/master/images/image00.png",
+                            style={
+                                "height": "52px",
+                                "position": "absolute",
+                                "top": "10px",
+                                "left": "120px"
+                            }
+                        ),
+                        href="https://github.com/HARDWAREdotASTRO",
+                        target="_blank"
+                    ),
+                    html.A(
+                        html.Img(
+                            src="https://blogs.winona.edu/alumni/wp-content/uploads/sites/3/2021/03/WSU-Foundation-Logo-Purple.jpg",
+                            style={
+                                "height": "100px",
+                                "position": "absolute",
+                                "bottom": "10px",
+                                "right": "10px"
+                            }
+                        ),
+                        href="https://www.winona.edu/foundation/",
+                        target="_blank"
+                    ),
+                    html.A(
+                        html.Img(
+                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTD4Zm2nU_ru4P_aw-465NI3EeRdRL9X0HETfj5z3sN5Y8kN8mY-Co7e8w&s=10",
+                            style={
+                                "height": "100px",
+                                "position": "absolute",
+                                "bottom": "10px",
+                                "right": "193px"
+                            }
+                        ),
+                        href="https://www.winona.edu/academics/colleges/science-engineering/physics-department/",
+                        target="_blank"
+                    ),
+                ]
+            )
     ],
-        style={
-            'padding': '0px 10px 15px 10px',
-            'marginLeft': 'auto', 
-            'marginRight': 'auto',
-            "width": "900px",
-            "height": "2225px",
-            'boxShadow': '0px 0px 15px 10px rgba(204,204,204,0.4)',
-        }
+    style={
+        'padding': '0px 10px 15px 10px',
+        'marginLeft': 'auto', 
+        'marginRight': 'auto',
+        "width": "900px",
+        "height": "2205px",
+        'boxShadow': '0px 0px 15px 10px rgba(204,204,204,0.4)',
+    }
 )
 
 @app.callback(Output('live-date-time', 'children'),

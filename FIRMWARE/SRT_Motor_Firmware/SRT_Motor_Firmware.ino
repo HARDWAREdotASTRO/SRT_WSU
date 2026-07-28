@@ -33,7 +33,7 @@ int forLimitReach = 0; //Forward limit hasn't been reached.
 
 //Counting Function variables
 int count = 0;      //Blank variable to count high low transitions.
-int count_pin = 4;  //This will be the sensor to count pulses.
+int count_pin = 5;  //This will be the sensor to count pulses.
 
 int lastState = 0;  //Stores switch state.
 int switchState = 0;//To check switch state.
@@ -200,8 +200,8 @@ int pickFunction(int &request) {
 
 int GoHome(int &direct, int &forLimitReach, int &revLimitReach)
 {
-    //count_till = 1003;      // Azimuth
-    count_till = 500;         // Altitude
+    count_till = 1003;      // Azimuth
+    //count_till = 900;         // Altitude
 
     if (revLimitReach == 0)
     {
