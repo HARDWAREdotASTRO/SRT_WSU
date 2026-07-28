@@ -108,7 +108,7 @@ baseline_curve = np.polyval(poly_coeffs, freqs_mhz)
 # Subtract estimated baseline curve to produce a flat noise floor
 flat_psd = psd_db - baseline_curve
 # 6. Data Visualization
-fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(10, 8))
+fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(14, 8))
 
 # Plot 1: Bandpass & Gain Corrected Raw PSD
 ax1.set_title("Bandpass & Gain Corrected PSD with Fitted Baseline")
