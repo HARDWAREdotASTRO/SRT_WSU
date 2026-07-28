@@ -1051,6 +1051,19 @@ app.layout = html.Div([
                 href="https://www.winona.edu/foundation/",
                 target="_blank"
             ),
+            html.A(
+                html.Img(
+                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTD4Zm2nU_ru4P_aw-465NI3EeRdRL9X0HETfj5z3sN5Y8kN8mY-Co7e8w&s=10",
+                    style={
+                        "height": "100px",
+                        "position": "absolute",
+                        "bottom": "10px",
+                        "right": "193px"
+                    }
+                ),
+                href="https://www.winona.edu/academics/colleges/science-engineering/physics-department/",
+                target="_blank"
+            ),
         ]
         )
     ],
