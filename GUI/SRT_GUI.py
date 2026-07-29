@@ -605,40 +605,18 @@ app.layout = html.Div([
                     ], 
                     className='Title'
                     ),
-                    html.Div([
-                        daq.StopButton(
-                            id="record-button",
-                            buttonText="RECORD",
-                            n_clicks=0,
-                            style={
-                                "margin": "5px",
-                                "display": "flex",
-                                "justify-content": "space-around",
-                                "align-items": "center",
-                                "position": "absolute",
-                                "bottom": "10px",
-                                "left": "-100px",
-                                "right": "-550px",
-                                "top": "1225px",
-                            },
-                        ),
-                        daq.StopButton(
-                            id="stoprecord-button",
-                            buttonText="STOP",
-                            n_clicks=0,
-                            style={
-                                "margin": "5px",
-                                "display": "flex",
-                                "justify-content": "space-around",
-                                "align-items": "center",
-                                "position": "absolute",
-                                "bottom": "10px",
-                                "left": "125px",
-                                "right": "-550px",
-                                "top": "1225px"
-                                },
-                        ),
-                    ]
+                        html.Div([
+                        daq.StopButton(id="record-button",buttonText="RECORD",),
+                        daq.StopButton(id="stoprecord-button",buttonText="STOP",),
+                        ],
+                        style={
+                        "display": "flex",
+                        "justifyContent": "center",
+                        "gap": "15px",
+                        "marginTop": "-50px",
+                        "marginRight": "-200px",
+
+                        },
                     ),
                     html.Div([
                         html.Div([
