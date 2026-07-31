@@ -12,6 +12,8 @@ from astropy.time import Time
 from astropy.table import Table
 from datetime import datetime
 
+import os
+import json
 import time
 import serial
 import numpy as np
@@ -110,7 +112,7 @@ app.layout = html.Div([
                     value="",
                     style={
                         "width": "99.75%",
-                        "height": "75px",
+                        "height": "80px",
                         "marginLeft": "0.25%",
                         "marginBottom": "0%",
                         },
@@ -847,50 +849,99 @@ app.layout = html.Div([
         className="row"
         ),
 
-            html.Div(
-                id="data-box",
-                children=[
-                    html.H3(
-                        "Data Settings",
+        html.Div(
+            id="data-box",
+            children=[
+                html.H3("Data Settings"),
+                html.Label("Observation Name"),\
+                dcc.Input(
+                    id="observation-name",
+                    type="text",
+                    placeholder="Enter Observation Name",
+                    style={
+                        "width": "100%"
+                    }
+                ),
+                html.Br(),
+                html.Br(),
+                html.Label("Project Folder"),
+                html.Div([
+                    dcc.Input(
+                        id="save-location",
+                        value="C:\\RadioData",
+                        type="text",
                         style={
-                            "position": "absolute",
-                            "top": "5px",
-                            "left": "10px",
-                            "margin": "0px",
+                            "width": "100%"
                         }
                     ),
-                    html.Div([
-                        daq.StopButton(id="load-button",buttonText="LOAD"),
-                        daq.StopButton(id="save-button", buttonText="SAVE"),
-                        daq.StopButton(id="export-button", buttonText="EXPORT"),
-                        daq.StopButton(id="reset-button",buttonText="RESET"),
+                    daq.StopButton(
+                        "Browse",
+                        id="browse-button",
+                        style={
+                            "marginTop": "10px",
+                            "marginLeft": "-160px"
+                        })
                     ],
+                    ),
+                html.Br(),
+                dcc.Checklist(
+                    id="save-options",
+                    options=[
+                        {"label":"Save Raw IQ", "value": "iq"},
+                        {"label":"Save Spectrum", "value": "spectrum"},
+                        {"label":"Save MetaData", "value": "metadata"},
+                    ],
+                    value=["spectrum","metadata"]
+                ),
+                dcc.Checklist(
+                    id="autosave",
+                    options=[
+                        {"label":"Auto Save", "value": "auto"},
+                    ]
+                ),
+                html.Hr(
                     style={
-                        "display": "grid",
-                        "gridTemplateColumns": "1fr 1fr",
-                        "gap": "px",
-                        "marginTop": "50px",
-                    },
-                    )
+                        "marginTop": "10px",
+                        "marginBottom": "10px",
+                    }
+                ),
+                html.Div([
+                    daq.StopButton(id="load-button",buttonText="LOAD"),
+                    daq.StopButton(id="save-button",buttonText="SAVE"),
+                    daq.StopButton(id="export-button",buttonText="EXPORT"),
+                    daq.StopButton(id="reset-button",buttonText="RESET"),
                 ],
                 style={
+                    "display": "grid",
+                    "gridTemplateColumns": "1fr 1fr",
+                    "gap": "10px",
+                    "topMargin": "-40px"
+                }
+                )
+            ],
+            style={
                     "border": "1px solid black",
-                    "height": "245px",
+                    "height": "575px",
                     "padding": "10px",
-                    "marginTop": "-245px",
+                    "marginTop": "-240px",
                     "marginBottom": "3%",
                     "position": "relative",
                     "left": "-35px",
                     "borderRadius": "4px"
                 },
                 className="four columns"
-            ),
+            ), 
         
             html.Div([ # Update interval every 1000 milliseconds (1 second)
                 dcc.Graph(id='live-hydrogen-graph'),
                 dcc.Interval(id='interval-component1',interval=1*1000, n_intervals=0)
             ],
-            className='twelve columns'
+            className='eight columns',
+            style={
+                "marginLeft": "300px",  
+                "marginTop": "-350px",
+                "height": "200px"   
+    }
             ),
 
             html.Div(id="containerbottom",
@@ -899,7 +950,7 @@ app.layout = html.Div([
                     "color": "white",
                     "position": "relative",
                     "padding": "10px",
-                    "top": "475px",
+                    "top": "455px",
                     "height": "100px",
                     "borderRadius": "4px"
                 },
@@ -990,7 +1041,7 @@ app.layout = html.Div([
         'marginLeft': 'auto', 
         'marginRight': 'auto',
         "width": "900px",
-        "height": "2205px",
+        "height": "2180px",
         'boxShadow': '0px 0px 15px 10px rgba(204,204,204,0.4)',
     }
 )
@@ -1465,7 +1516,6 @@ def getAltAz(val, RA, DEC):
 
     BodAlt2 = Body.transform_to(full_night_aa_frames2).alt.deg
     BodAz2 = Body.transform_to(full_night_aa_frames2).az.deg
-    #
     return BodAz1, BodAlt1, BodAz2, BodAlt2
 
 #Moc hydrogen line test/live updating with sample data to see plot
