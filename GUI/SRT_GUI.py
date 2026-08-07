@@ -607,19 +607,7 @@ app.layout = html.Div([
                     ], 
                     className='Title'
                     ),
-                        html.Div([
-                        daq.StopButton(id="record-button",buttonText="RECORD",),
-                        daq.StopButton(id="stoprecord-button",buttonText="STOP",),
-                        ],
-                        style={
-                        "display": "flex",
-                        "justifyContent": "center",
-                        "gap": "15px",
-                        "marginTop": "-50px",
-                        "marginRight": "-200px",
-
-                        },
-                    ),
+                        
                     html.Div([
                         html.Div([
                             html.H6("Method Select")
@@ -1519,21 +1507,34 @@ def getAltAz(val, RA, DEC):
     return BodAz1, BodAlt1, BodAz2, BodAlt2
 
 #Moc hydrogen line test/live updating with sample data to see plot
-def fetch_sdr_data(): #replace all this with data being read from SDR 
-        frequencies = np.linspace(1420.0, 1420.8, 200)
-        intensity = 10 + 5 * np.exp(-((frequencies - 1420.4)**2) / (0.05**2)) + np.random.normal(0, 0.5, 200)
+def fetch_sdr_data(start_freq, end_freq): #replace all this with data being read from SDR 
+        frequencies = np.linspace(start_freq, end_freq, 200)
+        center_frequency = (start_freq + end_freq) / 2
+        intensity = 10 + 5 * np.exp(-((frequencies - center_frequency)**2) / (0.05**2)) + np.random.normal(0, 0.5, 200)
         return frequencies, intensity
 
 @app.callback(
     Output('live-hydrogen-graph', 'figure'),
-    Input('interval-component1', 'n_intervals')
+    Input('interval-component1', 'n_intervals'),
+    State('frequencyStart', 'value'),
+    State('frequencyEnd', 'value')
 )
-def update_graph_live(n):
-    # Fetch latest SDR or backend telescope data
-    freqs, intensity = fetch_sdr_data()
+def update_graph_live(n, start_freq, end_freq): #takes in start and end frequency
 
-    # Create the Plotly Trace
-    trace = go.Scatter(
+    try:
+        start_freq = float(start_freq)
+        end_freq = float(end_freq)
+    except (TypeError, ValueError):
+        start_freq = 1420.0
+        end_freq = 1420.8
+
+    if start_freq >= end_freq:
+        start_freq = 1420.0
+        end_freq = 1420.8
+
+    freqs, intensity = fetch_sdr_data(start_freq, end_freq) #sends to fetch sdr data def
+
+    trace = go.Scatter( 
         x=freqs,
         y=intensity,
         mode='lines',
@@ -1546,7 +1547,7 @@ def update_graph_live(n):
         'data': [trace],
         'layout': go.Layout(
             title='Live 1.42 GHz Neutral Hydrogen Emission',
-            xaxis=dict(title='Frequency (MHz)', range=[1420.0, 1420.8]),
+            xaxis=dict(title='Frequency (MHz)', range=[start_freq, end_freq]),
             yaxis=dict(title='Relative Intensity', range=[0, 20]),
             #template='plotly_dark' # Clean visual theme
         )
