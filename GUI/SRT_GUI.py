@@ -1,7 +1,7 @@
 import dash
 import dash_daq as daq
 from dash.dependencies import Input, Output, State
-from dash import dcc, html
+from dash import dcc, html, callback
 from astropy.coordinates import EarthLocation
 from astropy import units as u
 from astropy import units as u
@@ -643,11 +643,15 @@ app.layout = html.Div([
                                 "border": "1px solid #2a3f5f"
                             }
                         ),
+                        html.Div(
+                            id="scan-status",
+                            children="Scan Ready",
+                        )
                     ],
                     style={
                         "display": "flex",
                         "alignItems": "center",
-                        "justifyContent": "center",
+                        "justifyContent": "flex-start",
                         "gap": "15px",
                         "padding": "10px 10px 10px 20px",
                     },
@@ -1227,6 +1231,36 @@ def serial_monitor(intervals):
     )
 
     return status
+
+@app.callback(
+        Output("scan-status", "children"),
+        Input("start-button", "n_clicks"),
+        Input("stop-scan-button", "n_clicks"),
+        State("observation-name", "value"),
+        State("save-location", "value"),
+        State("save-options", "value"),
+        State("autosave", "value"),
+        prevent_initial_call=True
+)
+
+def control_scan(start_clicks, stop_clicks, observation_name, save_location, save_options, autosave):
+    triggered = dash.callback_context.triggered_id
+
+    if triggered == "start-button":
+                print("START SCAN")
+                print("Observation:", observation_name)
+                print("Save Location:", save_location)
+                print("Save Options:", save_options)
+                print("Auto Save:", autosave)
+
+                return "Scanning..."
+
+    elif triggered == "stop-scan-button":
+                print("STOP SCAN")
+
+                return "Scan stopped."
+
+    return "Ready"
 
 #Box Size will be disabled if Scan 
 @app.callback(
