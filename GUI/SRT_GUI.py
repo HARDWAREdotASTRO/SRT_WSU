@@ -154,7 +154,8 @@ app.layout = html.Div([
                     ],
                     className="twelve columns",
                     style={
-                        "marginTop": "3%"
+                        "marginTop": "3%",
+                        "marginBottom": "0%"
                     }
                 )
                 ],
@@ -174,28 +175,24 @@ app.layout = html.Div([
                         ),
                     #Two buttons per row
                         html.Div([
-                            daq.StopButton(
+                            html.Button(
+                                "STOP MOTOR",
                                 id="stop-button", 
-                                buttonText="STOP",
+                                n_clicks=0,
+                                className="three columns",
                                 style={
-                                    "display": "center",
-                                    "justify-content": "space-around",
-                                    "padding": "10px 10px 10px 10px"
-                                },
-                                    #Six columns = half the row
-                                className="six columns",
-                                n_clicks=0
-                                ),
-                            daq.StopButton(
-                                id="go-home-button",
-                                buttonText="HOME", #Button makes telescope go HOME
-                                style={
-                                    "display": "flex-right",
-                                    "justify-content": "space-around",
-                                    "padding": "10px 10px 10px 10px"
-                                },
-                                className="six columns",
-                                n_clicks=0
+                                    "backgroundColor": "#DB2518",
+                                    "color": "white",
+                                    "borderRadius": "5px",
+                                    "cursor": "pointer",
+                                    "fontWeight": "600",
+                                    "display": "flex",
+                                    "justifyContent": "space-around",
+                                    "alignItems": "center",
+                                    "padding": "10px",
+                                    "width": "95%",
+                                    "border": "1px solid #2a3f5f"
+                                }, 
                                 ),
                             ],
                             style={
@@ -208,26 +205,55 @@ app.layout = html.Div([
                             className="row"
                         ),
                         html.Div([
-                            daq.StopButton(
+                            html.Button(
+                                "ZERO",
                                 id="zero-button",
-                                buttonText="Zero", #Button will ZERO the SRT
+                                n_clicks=0,
                                 style={
-                                    "display": "flex-right",
-                                    "justify-content": "space-around",
-                                    "padding": "10px 10px 10px 10px"
+                                    "backgroundColor": "#03AF4B",
+                                    "color": "white",
+                                    "borderRadius": "5px",
+                                    "cursor": "pointer",
+                                    "fontWeight": "600",
+                                    "display": "flex",
+                                    "justifyContent": "space-around",
+                                    "alignItems": "center",
+                                    "padding": "10px",
+                                    "width": "40%",
+                                    "border": "1px solid #2a3f5f",
                                 },
-                                className="six-columns",
-                                n_clicks=0
-                                ), 
+                            ),
+                            html.Button(
+                                "HOME",
+                                id="go-home-button",
+                                n_clicks=0,
+                                style={
+                                    "backgroundColor": "#03AF4B",
+                                    "color": "white",
+                                    "borderRadius": "5px",
+                                    "cursor": "pointer",
+                                    "fontWeight": "600",
+                                    "display": "flex",
+                                    "justifyContent": "space-around",
+                                    "alignItems": "center",
+                                    "padding": "10px",
+                                    "width": "40%",
+                                    "border": "1px solid #2a3f5f",
+                                },
+                            ),
                             ],
                             style={
-                                #Box shadow gives a light border
+                                "display": "flex",
+                                "flexDirection": "row",
+                                "justifyContent": "center",
+                                "alignItems": "center",
+                                "gap": "15px",
+                                "width": "100%",
                                 "align-items": "center",
                                 'boxShadow': '1px 1px 1px 1px rgba(204,204,204,0.4)',
-                                "padding": "10px 10px 10px 20px"
+                                "padding": "10px 0px 10px 0px"
                             },
-                            #Take up the whole row
-                            className="row"
+                            
                         ),    
                         #Seperate the motor controls for each motor
                         html.Div([
@@ -373,11 +399,12 @@ app.layout = html.Div([
                         ),             
                     ],
                     style={
-                        "align-items": "center",
+                        "alignItems": "center",
                         "border": "1px solid #2a3f5f",
-                        "border-radius": "4px",
-                        #'boxShadow': '0px 0px 5px 5px rgba(204,204,204,0.4)',
-                        "padding": "10px 10px 10px 20px"
+                        "borderRadius": "4px",
+                        "padding": "10px 10px 10px 20px",
+                        "position": "relative",
+                        "top": "0px",
                     },
                     #Direct control box takes a third of the page
                     className="four columns"
@@ -562,31 +589,71 @@ app.layout = html.Div([
                     ),
                     html.Div([
                         html.Button(
-                            "Go",
-                            id="go-button",
+                            "Update",
+                            id="update-button",
                             n_clicks=0,
-                            className="three columns",
                             style={
+                                "color": "white",
+                                "borderRadius": "5px",
+                                "cursor": "pointer",
+                                "fontWeight": "600",
                                 "display": "flex",
                                 "justifyContent": "space-around",
                                 "alignItems": "center",
                                 "padding": "10px",
                                 "width": "20%",
+                                "border": "1px solid #2a3f5f",
+                                "backgroundColor":  "#3f0099",
+
+                            }
+                        ),
+                        html.Button(
+                            "Start",
+                            id="start-button",
+                            n_clicks=0,
+                            style={
                                 "backgroundColor": "#03AF4B",
                                 "color": "white",
-                                "border": "1px solid #056D30",
                                 "borderRadius": "5px",
                                 "cursor": "pointer",
-                                "fontWeight": "600"
+                                "fontWeight": "600",
+                                "display": "flex",
+                                "justifyContent": "space-around",
+                                "alignItems": "center",
+                                "padding": "10px",
+                                "width": "20%",
+                                "border": "1px solid #2a3f5f"
                             }
-                        )
-                    ],                
+                        ),
+                        html.Button(
+                            "Stop Scan",
+                            id="stop-scan-button",
+                            n_clicks=0,
+                            style={
+                                "backgroundColor": "#DB2518",
+                                "color": "white",
+                                "borderRadius": "5px",
+                                "cursor": "pointer",
+                                "fontWeight": "600",
+                                "display": "flex",
+                                "justifyContent": "space-around",
+                                "alignItems": "center",
+                                "padding": "10px",
+                                "width": "20%",
+                                "border": "1px solid #2a3f5f"
+                            }
+                        ),
+                    ],
                     style={
-                        "align-items": "center",
-                        "padding": "10px 10px 10px 20px"
+                        "display": "flex",
+                        "alignItems": "center",
+                        "justifyContent": "center",
+                        "gap": "15px",
+                        "padding": "10px 10px 10px 20px",
                     },
                     className="twelve columns"
                     ),
+
                 ],
                 style={
                     "align-items": "center",
@@ -841,7 +908,7 @@ app.layout = html.Div([
             id="data-box",
             children=[
                 html.H3("Data Settings"),
-                html.Label("Observation Name"),\
+                html.Label("Observation Name"),
                 dcc.Input(
                     id="observation-name",
                     type="text",
@@ -862,13 +929,24 @@ app.layout = html.Div([
                             "width": "100%"
                         }
                     ),
-                    daq.StopButton(
-                        "Browse",
+                    html.Button(
+                        "BROWSE",
                         id="browse-button",
-                        style={
-                            "marginTop": "10px",
-                            "marginLeft": "-160px"
-                        })
+                             style={
+                                    "backgroundColor": "#DB2518",
+                                    "color": "white",
+                                    "borderRadius": "5px",
+                                    "cursor": "pointer",
+                                    "fontWeight": "600",
+                                    "display": "flex",
+                                    "justifyContent": "space-around",
+                                    "alignItems": "center",
+                                    "padding": "10px",
+                                    "width": "40%",
+                                    "border": "1px solid #2a3f5f",
+                                    "marginTop": "10px"
+                                }, 
+                    )
                     ],
                     ),
                 html.Br(),
@@ -894,32 +972,134 @@ app.layout = html.Div([
                     }
                 ),
                 html.Div([
-                    daq.StopButton(id="load-button",buttonText="LOAD"),
-                    daq.StopButton(id="save-button",buttonText="SAVE"),
-                    daq.StopButton(id="export-button",buttonText="EXPORT"),
-                    daq.StopButton(id="reset-button",buttonText="RESET"),
-                ],
-                style={
-                    "display": "grid",
-                    "gridTemplateColumns": "1fr 1fr",
-                    "gap": "10px",
-                    "topMargin": "-40px"
-                }
+                    html.Button(
+                        "LOAD",
+                        id="load-button",
+                        style={
+                            "backgroundColor": "#DB2518",
+                            "color": "white",
+                            "borderRadius": "5px",
+                            "cursor": "pointer",
+                            "fontWeight": "600",
+                            "display": "flex",
+                            "justifyContent": "space-around",
+                            "alignItems": "center",
+                            "padding": "10px",
+                            "width": "95%",
+                            "border": "1px solid #2a3f5f"
+                        },
+                    ),
+                    html.Button(
+                        "SAVE",
+                        id="save-button",
+                        style={
+                           "backgroundColor": "#DB2518",
+                                    "color": "white",
+                                    "borderRadius": "5px",
+                                    "cursor": "pointer",
+                                    "fontWeight": "600",
+                                    "display": "flex",
+                                    "justifyContent": "space-around",
+                                    "alignItems": "center",
+                                    "padding": "10px",
+                                    "width": "95%",
+                                    "border": "1px solid #2a3f5f"
+                        },
+                    ),
+                    html.Button(
+                        "EXPORT",
+                        id="export-button",
+                        style={
+                            "backgroundColor": "#DB2518",
+                                    "color": "white",
+                                    "borderRadius": "5px",
+                                    "cursor": "pointer",
+                                    "fontWeight": "600",
+                                    "display": "flex",
+                                    "justifyContent": "space-around",
+                                    "alignItems": "center",
+                                    "padding": "10px",
+                                    "width": "95%",
+                                    "border": "1px solid #2a3f5f"
+                        },
+                    ),
+                    html.Button(
+                        "RESET",
+                        id="reset-button",
+                        style={
+                          "backgroundColor": "#DB2518",
+                                    "color": "white",
+                                    "borderRadius": "5px",
+                                    "cursor": "pointer",
+                                    "fontWeight": "600",
+                                    "display": "flex",
+                                    "justifyContent": "space-around",
+                                    "alignItems": "center",
+                                    "padding": "10px",
+                                    "width": "95%",
+                                    "border": "1px solid #2a3f5f"
+                        },
+                    ),
+                    ],
+                    style={
+                        "display": "grid",
+                        "gridTemplateColumns": "1fr 1fr",
+                        "gap": "10px",
+                        "width": "100%",
+                        "marginTop": "15px",
+                    },
                 )
             ],
             style={
-                    "border": "1px solid black",
-                    "height": "575px",
-                    "padding": "10px",
-                    "marginTop": "-240px",
-                    "marginBottom": "3%",
-                    "position": "relative",
-                    "left": "-35px",
-                    "borderRadius": "4px"
-                },
+                "border": "1px solid black",
+                "height": "575px",
+                "padding": "10px",
+                "position": "relative",
+                "top": "-300px",
+                "left": "-35px",
+                "borderRadius": "4px",
+            },
                 className="four columns"
             ), 
-        
+            html.Div(
+                id="cool-button-box",
+                children=[
+                    html.H3("Top Secret Button"),
+
+                    html.A(
+                        html.Button(
+                            "Seriously Dont Press",
+                            id="start-button",
+                            n_clicks=0,
+                            style={
+                                "backgroundColor": "#03AF4B",
+                                "color": "white",
+                                "borderRadius": "5px",
+                                "cursor": "pointer",
+                                "fontWeight": "600",
+                                "display": "flex",
+                                "justifyContent": "space-around",
+                                "alignItems": "center",
+                                "padding": "10px",
+                                "width": "95%",
+                                "border": "1px solid #2a3f5f"
+                            }
+                        ),
+                        href="https://www.youtube.com/watch?v=Aq5WXmQQooo",
+                        target="_blank"
+                    ),
+            ],
+            style={
+                "border": "1px solid black",
+                "height": "150px",
+                "padding": "10px",
+                "position": "relative",
+                "top": "300px",
+                "left": "-350px",
+                "borderRadius": "4px",
+            },
+                className="four columns"
+            ),
             html.Div([ # Update interval every 1000 milliseconds (1 second)
                 dcc.Graph(id='live-hydrogen-graph'),
                 dcc.Interval(id='interval-component1',interval=1*1000, n_intervals=0)
@@ -927,18 +1107,17 @@ app.layout = html.Div([
             className='eight columns',
             style={
                 "marginLeft": "300px",  
-                "marginTop": "-350px",
+                "marginTop": "-550px",
                 "height": "200px"   
-    }
+            }
             ),
-
             html.Div(id="containerbottom",
                 style={
                     "backgroundColor": "#3f0099",
                     "color": "white",
                     "position": "relative",
                     "padding": "10px",
-                    "top": "455px",
+                    "top": "465px",
                     "height": "100px",
                     "borderRadius": "4px"
                 },
@@ -992,7 +1171,6 @@ app.layout = html.Div([
                                 "left": "120px"
                             }
                         ),
-                        href="https://github.com/HARDWAREdotASTRO",
                         target="_blank"
                     ),
                     html.A(
@@ -1005,7 +1183,6 @@ app.layout = html.Div([
                                 "right": "10px"
                             }
                         ),
-                        href="https://www.winona.edu/foundation/",
                         target="_blank"
                     ),
                     html.A(
@@ -1018,7 +1195,6 @@ app.layout = html.Div([
                                 "right": "193px"
                             }
                         ),
-                        href="https://www.winona.edu/academics/colleges/science-engineering/physics-department/",
                         target="_blank"
                     ),
                 ]
@@ -1096,7 +1272,7 @@ def frequencyState(selection):
     Output(component_id='alt', component_property='children'),
     [Input(component_id='RA', component_property='value'),
      Input(component_id='DEC', component_property='value'),
-     Input(component_id='go-button', component_property='n_clicks')]
+     Input(component_id='update-button', component_property='n_clicks')]
 )
 
 def output_alt(RA, DEC, clicks):
@@ -1133,7 +1309,7 @@ def output_alt(RA, DEC, clicks):
     Output(component_id='az', component_property='children'),
     [Input(component_id='RA', component_property='value'),
      Input(component_id='DEC', component_property='value'),
-     Input(component_id='go-button', component_property='n_clicks')]
+     Input(component_id='update-button', component_property='n_clicks')]
 )
 
 
@@ -1383,12 +1559,11 @@ def motorLocationAlt(delay):
 
 @app.callback(
     Output('graph', 'figure'),
-    [Input(component_id='refresher3', 
-          component_property='n_intervals'),
+    [Input(component_id='refresher3', component_property='n_intervals'),
     Input(component_id='solarsystem', component_property='value'),
     Input(component_id='RA', component_property='value'),
      Input(component_id='DEC', component_property='value'),
-    Input(component_id='go-button', component_property='n_clicks')]
+    Input(component_id='update-button', component_property='n_clicks')]
 )
 
 #Makes Graph with Sun, Moon and planets and trajectory of object of choice
