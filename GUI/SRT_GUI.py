@@ -927,7 +927,7 @@ app.layout = html.Div([
                 html.Div([
                     dcc.Input(
                         id="save-location",
-                        value="C:\\RadioData",
+                        value="C:\\SRT_Radio_Data",
                         type="text",
                         style={
                             "width": "100%"
@@ -1073,11 +1073,11 @@ app.layout = html.Div([
                     html.A(
                         html.Button(
                             "Seriously Dont Press",
-                            id="start-button",
+                            id="troll-button",
                             n_clicks=0,
                             style={
-                                "backgroundColor": "#03AF4B",
-                                "color": "white",
+                                "backgroundColor": "#FAFAFA",
+                                "color": "grey",
                                 "borderRadius": "5px",
                                 "cursor": "pointer",
                                 "fontWeight": "600",
@@ -1086,11 +1086,13 @@ app.layout = html.Div([
                                 "alignItems": "center",
                                 "padding": "10px",
                                 "width": "95%",
-                                "border": "1px solid #2a3f5f"
                             }
                         ),
                         href="https://www.youtube.com/watch?v=Aq5WXmQQooo",
-                        target="_blank"
+                        target="_blank",
+                        style={
+                            "textDecoration": "none"
+                        }
                     ),
             ],
             style={
@@ -1106,7 +1108,8 @@ app.layout = html.Div([
             ),
             html.Div([ # Update interval every 1000 milliseconds (1 second)
                 dcc.Graph(id='live-hydrogen-graph'),
-                dcc.Interval(id='interval-component1',interval=1*1000, n_intervals=0)
+                dcc.Interval(id='interval-component1',interval=1*1000, n_intervals=0),
+                dcc.Store(id="spectrum-data")
             ],
             className='eight columns',
             style={
@@ -1261,6 +1264,86 @@ def control_scan(start_clicks, stop_clicks, observation_name, save_location, sav
                 return "Scan stopped."
 
     return "Ready"
+
+@app.callback(
+        Output("save-button", "children"),
+        Input("save-button", "n_clicks"),
+        State("observation-name", "value"),
+        State("save-location", "value"),
+        State("save-options", "value"),
+        State("spectrum-data", "data"),
+        prevent_initial_call=True
+)
+
+def SaveProject(n_clicks, observation_name, save_location, save_options, spectrum_data):
+    if not observation_name:
+        return "SAVE"
+
+    save_options = save_options or []
+
+    project_path = os.path.join(save_location, observation_name)
+
+    print("Observation:", observation_name)
+    print("Save Location:", save_location)
+    print("Project Path:", project_path)
+    print("Save Options:", save_options)
+
+    if not os.path.exists(project_path):
+        os.makedirs(project_path)
+
+    if "metadata" in save_options:
+
+        metadata = {
+            "Observation": observation_name,
+        }
+
+        with open(
+            os.path.join(project_path, "metadata.json"),
+            "w"
+        ) as outfile:
+            json.dump(metadata, outfile, indent=4)
+
+    if "spectrum" in save_options:
+
+        print("Attempting to save spectrum...")
+
+        if spectrum_data is not None:
+
+            frequencies = np.array(spectrum_data["frequency"])
+            intensity = np.array(spectrum_data["intensity"])
+
+            spectrum = np.column_stack(
+                (frequencies, intensity)
+            )
+
+            spectrum_path = os.path.join(
+                project_path,
+                "spectrum.csv"
+            )
+
+            print("Spectrum path:", spectrum_path)
+
+            np.savetxt(
+                spectrum_path,
+                spectrum,
+                delimiter=",",
+                header="Frequency_MHz,Intensity",
+                comments=""
+            )
+
+            print("Spectrum saved!")
+            print("File exists:", os.path.exists(spectrum_path))
+
+        else:
+            print("No spectrum data available!")
+
+    if "iq" in save_options:
+
+        #add data and code from SDR here for saving
+
+        pass
+
+    return "SAVED"
 
 #Box Size will be disabled if Scan 
 @app.callback(
@@ -1724,15 +1807,18 @@ def fetch_sdr_data(start_freq, end_freq): #replace all this with data being read
 
 @app.callback(
     Output('live-hydrogen-graph', 'figure'),
+    Output('spectrum-data', 'data'),
     Input('interval-component1', 'n_intervals'),
     State('frequencyStart', 'value'),
     State('frequencyEnd', 'value')
 )
-def update_graph_live(n, start_freq, end_freq): #takes in start and end frequency
+
+def update_graph_live(n, start_freq, end_freq):
 
     try:
         start_freq = float(start_freq)
         end_freq = float(end_freq)
+
     except (TypeError, ValueError):
         start_freq = 1420.0
         end_freq = 1420.8
@@ -1741,26 +1827,45 @@ def update_graph_live(n, start_freq, end_freq): #takes in start and end frequenc
         start_freq = 1420.0
         end_freq = 1420.8
 
-    freqs, intensity = fetch_sdr_data(start_freq, end_freq) #sends to fetch sdr data def
+    # Get the current spectrum
+    freqs, intensity = fetch_sdr_data(
+        start_freq,
+        end_freq
+    )
 
-    trace = go.Scatter( 
+    trace = go.Scatter(
         x=freqs,
         y=intensity,
         mode='lines',
         name='Antenna Temperature',
-        line=dict(color='firebrick', width=2)
+        line=dict(
+            color='firebrick',
+            width=2
+        )
     )
 
-    # Return the Figure Object
-    return {
+    figure = {
         'data': [trace],
         'layout': go.Layout(
             title='Live 1.42 GHz Neutral Hydrogen Emission',
-            xaxis=dict(title='Frequency (MHz)', range=[start_freq, end_freq]),
-            yaxis=dict(title='Relative Intensity', range=[0, 20]),
-            #template='plotly_dark' # Clean visual theme
+            xaxis=dict(
+                title='Frequency (MHz)',
+                range=[start_freq, end_freq]
+            ),
+            yaxis=dict(
+                title='Relative Intensity',
+                range=[0, 20]
+            )
         )
     }
+
+    # Store the latest spectrum
+    spectrum = {
+        "frequency": freqs.tolist(),
+        "intensity": intensity.tolist()
+    }
+
+    return figure, spectrum
 
 if __name__ == '__main__':
     app.run(debug=True)
