@@ -933,24 +933,6 @@ app.layout = html.Div([
                             "width": "100%"
                         }
                     ),
-                    html.Button(
-                        "BROWSE",
-                        id="browse-button",
-                             style={
-                                    "backgroundColor": "#DB2518",
-                                    "color": "white",
-                                    "borderRadius": "5px",
-                                    "cursor": "pointer",
-                                    "fontWeight": "600",
-                                    "display": "flex",
-                                    "justifyContent": "space-around",
-                                    "alignItems": "center",
-                                    "padding": "10px",
-                                    "width": "40%",
-                                    "border": "1px solid #2a3f5f",
-                                    "marginTop": "10px"
-                                }, 
-                    )
                     ],
                     ),
                 html.Br(),
@@ -977,44 +959,10 @@ app.layout = html.Div([
                 ),
                 html.Div([
                     html.Button(
-                        "LOAD",
-                        id="load-button",
-                        style={
-                            "backgroundColor": "#DB2518",
-                            "color": "white",
-                            "borderRadius": "5px",
-                            "cursor": "pointer",
-                            "fontWeight": "600",
-                            "display": "flex",
-                            "justifyContent": "space-around",
-                            "alignItems": "center",
-                            "padding": "10px",
-                            "width": "95%",
-                            "border": "1px solid #2a3f5f"
-                        },
-                    ),
-                    html.Button(
                         "SAVE",
                         id="save-button",
                         style={
                            "backgroundColor": "#DB2518",
-                                    "color": "white",
-                                    "borderRadius": "5px",
-                                    "cursor": "pointer",
-                                    "fontWeight": "600",
-                                    "display": "flex",
-                                    "justifyContent": "space-around",
-                                    "alignItems": "center",
-                                    "padding": "10px",
-                                    "width": "95%",
-                                    "border": "1px solid #2a3f5f"
-                        },
-                    ),
-                    html.Button(
-                        "EXPORT",
-                        id="export-button",
-                        style={
-                            "backgroundColor": "#DB2518",
                                     "color": "white",
                                     "borderRadius": "5px",
                                     "cursor": "pointer",
@@ -1056,7 +1004,7 @@ app.layout = html.Div([
             ],
             style={
                 "border": "1px solid black",
-                "height": "575px",
+                "height": "450px",
                 "padding": "10px",
                 "position": "relative",
                 "top": "-300px",
@@ -1100,7 +1048,7 @@ app.layout = html.Div([
                 "height": "150px",
                 "padding": "10px",
                 "position": "relative",
-                "top": "300px",
+                "top": "175px",
                 "left": "-350px",
                 "borderRadius": "4px",
             },
@@ -1109,12 +1057,13 @@ app.layout = html.Div([
             html.Div([ # Update interval every 1000 milliseconds (1 second)
                 dcc.Graph(id='live-hydrogen-graph'),
                 dcc.Interval(id='interval-component1',interval=1*1000, n_intervals=0),
-                dcc.Store(id="spectrum-data")
+                dcc.Store(id="spectrum-data"),
+                dcc.Store(id="loaded-spectrum-data"),
             ],
             className='eight columns',
             style={
                 "marginLeft": "300px",  
-                "marginTop": "-550px",
+                "marginTop": "-450px",
                 "height": "200px"   
             }
             ),
@@ -1124,7 +1073,7 @@ app.layout = html.Div([
                     "color": "white",
                     "position": "relative",
                     "padding": "10px",
-                    "top": "465px",
+                    "top": "440px",
                     "height": "100px",
                     "borderRadius": "4px"
                 },
@@ -1139,7 +1088,6 @@ app.layout = html.Div([
                                 "left": "10px"
                             }
                         ),
-                        href="https://www.raspberrypi.com/",
                         target="_blank"
                     ),
                     html.A(
@@ -1152,7 +1100,19 @@ app.layout = html.Div([
                                 "left": "12.5px"
                             }
                         ),
-                        href="https://www.pololu.com/",
+                        target="_blank"
+                    ),
+                    html.A(
+                        html.Img(
+                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ_AeqXxbdVyvL0bolMao3-dIW-RBPZHB0YbS0tjTBC2LtzNWWXuH1mGpA&s=10",
+                            style={
+                                "height": "45px",
+                                "width": "80px",
+                                "position": "absolute",
+                                "bottom": "10px",
+                                "left": "125px"
+                            }
+                        ),
                         target="_blank"
                     ),
                     html.A(
@@ -1165,7 +1125,6 @@ app.layout = html.Div([
                                 "left": "55px"
                             }
                         ),
-                        href="https://www.arduino.cc/",
                         target="_blank"
                     ),
                     html.A(
@@ -1246,15 +1205,14 @@ def serial_monitor(intervals):
         prevent_initial_call=True
 )
 
-def control_scan(start_clicks, stop_clicks, observation_name, save_location, save_options, autosave):
+#Scanning control - start and stop scan - prints to terminal if the scan went through
+def control_scan(start_clicks, stop_clicks, observation_name, save_location, save_options, autosave): 
     triggered = dash.callback_context.triggered_id
 
     if triggered == "start-button":
                 print("START SCAN")
                 print("Observation:", observation_name)
                 print("Save Location:", save_location)
-                print("Save Options:", save_options)
-                print("Auto Save:", autosave)
 
                 return "Scanning..."
 
@@ -1275,6 +1233,7 @@ def control_scan(start_clicks, stop_clicks, observation_name, save_location, sav
         prevent_initial_call=True
 )
 
+#def for saving the observations for different projects - saving name, file location, save options, and spectrum - prints information to terminal once save button is pressed
 def SaveProject(n_clicks, observation_name, save_location, save_options, spectrum_data):
     if not observation_name:
         return "SAVE"
@@ -1293,9 +1252,7 @@ def SaveProject(n_clicks, observation_name, save_location, save_options, spectru
 
     if "metadata" in save_options:
 
-        metadata = {
-            "Observation": observation_name,
-        }
+        metadata = {"Observation": observation_name,}
 
         with open(
             os.path.join(project_path, "metadata.json"),
@@ -1307,19 +1264,12 @@ def SaveProject(n_clicks, observation_name, save_location, save_options, spectru
 
         print("Attempting to save spectrum...")
 
-        if spectrum_data is not None:
+        if spectrum_data is not None: #takes data from spectrum graph and user inputs
 
             frequencies = np.array(spectrum_data["frequency"])
             intensity = np.array(spectrum_data["intensity"])
-
-            spectrum = np.column_stack(
-                (frequencies, intensity)
-            )
-
-            spectrum_path = os.path.join(
-                project_path,
-                "spectrum.csv"
-            )
+            spectrum = np.column_stack((frequencies, intensity))
+            spectrum_path = os.path.join(project_path,"spectrum.csv")
 
             print("Spectrum path:", spectrum_path)
 
