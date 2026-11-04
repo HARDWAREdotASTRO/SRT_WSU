@@ -1,5 +1,3 @@
-import dash
-import dash_daq as daq
 from dash.dependencies import Input, Output, State
 from dash import dcc, html, callback
 from astropy.coordinates import EarthLocation
@@ -11,7 +9,16 @@ from astropy.coordinates import get_body
 from astropy.time import Time
 from astropy.table import Table
 from datetime import datetime
+from scipy.signal import find_peaks
+from scipy import signal
+from IPython.display import Image
+from astropy.visualization import astropy_mpl_style
 
+import adi
+import csv
+import pandas as pd
+import dash
+import dash_daq as daq
 import os
 import json
 import time
@@ -20,9 +27,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import plotly.graph_objs as go
 
-from IPython.display import Image
-from astropy.visualization import astropy_mpl_style
-plt.style.use(astropy_mpl_style)
 
 #Initialize serial communication, this is often commented out to see the webpage when the Arduino is not hooked up
 
@@ -1252,7 +1256,10 @@ def SaveProject(n_clicks, observation_name, save_location, save_options, spectru
 
     if "metadata" in save_options:
 
-        metadata = {"Observation": observation_name,}
+        metadata = {"Observation": observation_name,
+                    "Project Path": project_path,
+                    "Save Options": save_options
+                    }
 
         with open(
             os.path.join(project_path, "metadata.json"),
@@ -1418,12 +1425,14 @@ def goHomeButton(home_clicks):
 )
 
 def StopButton(stop_clicks):
-    #String to be sent to the Arduino
-    this_strAlt = "<0,0>"
-    this_strAz  = "<0,0>"
-    #Sends string to the Arduino
-    ser2.write(str.encode(this_strAlt))
-    ser1.write(str.encode(this_strAz))
+    
+    if stop_clicks > 0:
+        #String to be sent to the Arduino
+        this_strAlt = "<0,0>"
+        this_strAz  = "<0,0>"
+        #Sends string to the Arduino
+        ser2.write(str.encode(this_strAlt))
+        ser1.write(str.encode(this_strAz))
 
 @app.callback(
     Output(component_id='zero-button-count', component_property='children'),
