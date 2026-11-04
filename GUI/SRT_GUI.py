@@ -14,8 +14,8 @@ from scipy import signal
 from IPython.display import Image
 from astropy.visualization import astropy_mpl_style
 
-import adi
-import csv
+#import adi
+#import csv
 import pandas as pd
 import dash
 import dash_daq as daq
@@ -33,8 +33,8 @@ import plotly.graph_objs as go
 #ser1 = serial.Serial('/dev/serial/by-id/usb-Arduino__www.arduino.cc__0043_85438333835351901141-if00', baudrate = 9600, timeout=1) #tried to impliment serial connection via arduino ID
 #ser2 = serial.Serial('/dev/serial/by-id/ usb-Arduino__www.arduino.cc__0043_75131313632351F081F1-if00', baudrate = 9600, timeout=1)
 
-#ser1 = serial.Serial('/dev/ttyACM0', baudrate = 9600, timeout=1)
-#ser2 = serial.Serial('/dev/ttyACM1', baudrate = 9600, timeout=1)
+ser1 = serial.Serial('/dev/ttyACM0', baudrate = 9600, timeout=1)
+ser2 = serial.Serial('/dev/ttyACM1', baudrate = 9600, timeout=1)
 
 
 #Dummy variables for keeping track of button presses.
@@ -1425,15 +1425,21 @@ def goHomeButton(home_clicks):
 )
 
 def StopButton(stop_clicks):
+    print("Stop button pressed")
     
-    if stop_clicks > 0:
-        #String to be sent to the Arduino
-        this_strAlt = "<0,0>"
-        this_strAz  = "<0,0>"
-        #Sends string to the Arduino
-        ser2.write(str.encode(this_strAlt))
-        ser1.write(str.encode(this_strAz))
-
+    this_strAlt = "<0,0>"
+    this_strAz  = "<0,0>"
+    
+    ser2.write(str.encode(this_strAlt))
+    ser1.write(str.encode(this_strAz))
+    
+    ser1.flush()
+    ser2.flush()
+    
+    print("stop command sent")
+    return "motor stopped"
+    
+    
 @app.callback(
     Output(component_id='zero-button-count', component_property='children'),
     [Input(component_id='zero-button', component_property='n_clicks')]
