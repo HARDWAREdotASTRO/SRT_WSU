@@ -30,11 +30,20 @@ import plotly.graph_objs as go
 
 #Initialize serial communication, this is often commented out to see the webpage when the Arduino is not hooked up
 
-#ser1 = serial.Serial('/dev/serial/by-id/usb-Arduino__www.arduino.cc__0043_85438333835351901141-if00', baudrate = 9600, timeout=1) #tried to impliment serial connection via arduino ID
-#ser2 = serial.Serial('/dev/serial/by-id/ usb-Arduino__www.arduino.cc__0043_75131313632351F081F1-if00', baudrate = 9600, timeout=1)
+ser1 = serial.Serial(
+    '/dev/serial/by-id/usb-Arduino_Srl_Arduino_Uno_556393031353514181E0-if00',
+    baudrate = 9600,
+    timeout=1
+    ) #tried to impliment serial connection via arduino ID
+    
+ser2 = serial.Serial(
+    '/dev/serial/by-id/usb-Arduino_Srl_Arduino_Uno_55639303135351510202-if00',
+    baudrate = 9600,
+    timeout=1
+    )
 
-ser1 = serial.Serial('/dev/ttyACM0', baudrate = 9600, timeout=1)
-ser2 = serial.Serial('/dev/ttyACM1', baudrate = 9600, timeout=1)
+#ser1 = serial.Serial('/dev/ttyACM0', baudrate = 9600, timeout=1)
+#ser2 = serial.Serial('/dev/ttyACM1', baudrate = 9600, timeout=1)
 
 
 #Dummy variables for keeping track of button presses.
